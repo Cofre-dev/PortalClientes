@@ -1,74 +1,47 @@
 <template>
-  <div>
-    <h1>Mis Documentos</h1>
-    <div v-if="loading">Cargando...</div>
-    <table v-else>
-      <thead>
-        <tr>
-          <th>Tipo de Documento</th>
-          <th>Descargar (Consultora)</th>
-          <th>Subir mi archivo</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="doc in documentos" :key="doc.id">
-          <td>{{ doc.tipo_documento.nombre }}</td>
-          <td>
-            <a :href="doc.archivo_consultora" target="_blank" v-if="doc.archivo_consultora">
-              Descargar Archivo
-            </a>
-            <span v-else>No disponible</span>
-          </td>
-          <td>
-            <input type="file" @change="handleFileUpload($event, doc.id)" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button @click="logout">Cerrar Sesión</button>
+  <div v-if="profile.role_type === 'administrador'">
+    <DashboardAdmin :profile="profile" /> 
+  </div>
+
+  <div v-else-if="profile.role_type === 'cliente'">
+    <DashboardCliente :profile="profile" />
+  </div>
+
+  <div v-else>
+    <p>Cargando perfil...</p>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'; // Asegúrate de importar useRouter si lo usas en logout
+import DashboardAdmin from '@/components/DashboardAdmin.vue';
+import DashboardCliente from '@/components/DashboardCliente.vue';
 
-const documentos = ref([]);
-const loading = ref(true);
-const router = useRouter();
+const profile = ref({});
+const loading = ref(true); // Añadimos un estado de carga
+const router = useRouter(); // Inicializa el router
 
-async function fetchDocuments() {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    router.push('/'); // Si no hay token, redirige al login
-    return;
+// 1. Definir el apiClient con la URL COMPLETA del backend
+const apiClient = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api', 
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
   }
+});
 
+// 2. Usar el apiClient para la llamada
+onMounted(async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/documentos/', {
-      headers: {
-        // Así le decimos a Django quiénes somos
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    documentos.value = response.data;
+    const response = await apiClient.get('/me/');
+    profile.value = response.data;
   } catch (error) {
-    console.error("Error al cargar documentos:", error);
-    // Podrías manejar un token expirado aquí
-    if (error.response && error.response.status === 401) {
-        logout();
-    }
-  } finally {
-    loading.value = false;
-  }
-}
-
-function logout() {
-    localStorage.removeItem('accessToken');
+    console.error("No se pudo obtener el perfil del usuario", error);
+    // Si falla, podrías redirigir al login
     router.push('/');
-}
-
-// Llama a la función cuando el componente se ha montado en la página
-onMounted(fetchDocuments);
+  } finally {
+    loading.value = false; // Oculta el mensaje de "Cargando"
+  }
+});
 </script>

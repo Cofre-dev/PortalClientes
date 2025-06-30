@@ -1,19 +1,29 @@
 from rest_framework import serializers
 from .models import * 
 
+
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cliente
+        fields = ['razon_social', 'rut_empresa']
+
 class TipoDocumentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoDocumento
         fields = ['nombre', 'codigo']
         
+       
+# MODIFICADO: DocumentoSerializer ahora incluye los datos del cliente
 class DocumentoSerializer(serializers.ModelSerializer):
-    #En este campo se uso el serializer anterior para mostrar el nombre del documento + el ID
     tipo_documento = TipoDocumentoSerializer(read_only=True)
     
-    #En estas lineas estamos haciendo que la URL del archivo sea completa para ser usada en el front
+    # AÑADIDO: Esta línea adjunta la información del cliente a cada documento.
+    cliente = ClienteSerializer(read_only=True)
+    
     archivo_consultora = serializers.FileField(use_url=True, read_only=True)
     archivo_cliente = serializers.FileField(use_url=True, read_only=True)
-    
+
     class Meta:
         model = Documento
-        fields = ['id', 'tipo_documento', 'archivo_consultora', 'archivo_cliente', 'fecha_actualizacion']
+        # Asegúrate de incluir 'cliente' en los fields
+        fields = ['id', 'cliente', 'tipo_documento', 'archivo_consultora', 'archivo_cliente', 'fecha_actualizacion']

@@ -3,11 +3,28 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Administrador(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rol = models.CharField(max_length=50, help_text="Ingrese su rol")
+    
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username} ({self.rol})"
+
+
 #Esta clase esta encargada de almacenar los datos de la empresa, como conectarse con el sistema de usuarios
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #Este campo será completado por el rut de la empresa
     razon_social = models.CharField(max_length=255)
     rut_empresa = models.CharField(max_length=12, unique=True, help_text="RUT sin puntos ni guion. ")
+    
+    # Un administrador puede tener muchos clientes.
+    administrador_asignado = models.ForeignKey(
+        Administrador, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='clientes_asignados'
+    )
     
     def __str__(self):
         return self.razon_social

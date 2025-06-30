@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -7,6 +7,31 @@ from .models import *
 from .serializers import * 
 
 # Create your views here.
+
+class ProfileView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        if hasattr(request.user, 'administrador'):
+            profile = request.user.administrador
+            data = {
+                'username': request.user.username,
+                'full_name':request.user.get_full_name(),
+                'role_type':'administrador',
+                'role_detail': profile.rol,
+            }
+            return Response(data)
+        elif hasattr(request.user, 'cliente'):
+            profile = request.user.cliente
+            data = {
+                'username': request.user.username,
+                'role_type':'cliente',
+                'company_name': profile.razon_social,
+            }
+            return Response(data)
+        
+        return Response({'Error': 'Perfil no encontrado'}, status=404)
+
 
 class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de viewsets.ModelViewSet
     #API endpoint que te permite ver y editar los documentos
@@ -19,7 +44,17 @@ class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de
         que los esta solicitando
         """
         #Ojo con esta linea!!!
-        return Documento.objects.filter(Cliente=self.request.user.cliente)
+        user = self.request.user
+        
+        #Si el usuario es administrador
+        if hasattr(user, 'administrador'):
+            return Documento.objects.filter(cliente__in=user.administrador.clientes_asignados.all())
+        
+        elif hasattr(user, 'cliente'):
+            return Documento.objects.filter(cliente=user.cliente)
+        
+        #Si no es ninguno no devuelve nada
+        return Documento.objects.none()
     
     @action(detail=True, methods=['post'], url_path="subir-cliente")
     def subir_archivo_cliente(self, request, pk=None):

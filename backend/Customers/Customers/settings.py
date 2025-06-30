@@ -143,3 +143,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", # La URL por defecto del servidor de desarrollo de Vue
     "http://127.0.0.1:5173",
 ]
+
+# URL que se usará para acceder a los archivos subidos
+MEDIA_URL = '/media/'
+
+# Ruta en el disco duro donde se guardarán los archivos subidos
+MEDIA_ROOT = BASE_DIR / 'media'

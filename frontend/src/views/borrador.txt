@@ -1,0 +1,243 @@
+<template>
+  <div class="portal-container">
+    <!-- 1. Logo con efecto hover (Corregido para usar una URL y no un archivo local) -->
+    <img src="https://placehold.co/150x50/FFFFFF/0A2240?text=Logo+Empresa" alt="Logo de la Consultora" class="logo">
+
+    <div class="header">
+      <h1>Portal de Documentos</h1>
+      <button @click="logout" class="logout-button">Cerrar Sesión</button>
+    </div>
+
+    <div v-if="loading" class="loading-spinner">Cargando...</div>
+
+    <!-- 2. Tabla de documentos con diseño profesional -->
+    <div v-else class="documents-table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo de Documento</th>
+            <th>Descargar (Consultora)</th>
+            <th>Mi Archivo (Cliente)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="doc in documentos" :key="doc.id">
+            <!-- Nombre del documento -->
+            <td>{{ doc.tipo_documento.nombre }}</td>
+
+            <!-- Columna de Descarga (archivo de la consultora) -->
+            <td>
+              <a :href="doc.archivo_consultora" target="_blank" class="action-button download" v-if="doc.archivo_consultora">
+                Descargar
+              </a>
+              <span class="status-text" v-else>No disponible</span>
+            </td>
+
+            <!-- Columna de Subida/Descarga (archivo del cliente) -->
+            <td>
+              <!-- Si el cliente ya subió un archivo, muestra un botón para descargarlo -->
+              <a :href="doc.archivo_cliente" target="_blank" class="action-button download" v-if="doc.archivo_cliente">
+                Ver mi archivo
+              </a>
+              <!-- Si no, muestra el input para subir uno nuevo -->
+              <label class="action-button upload" v-else>
+                Subir Archivo
+                <input type="file" @change="handleFileUpload($event, doc.id)" class="file-input">
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const documentos = ref([]);
+const loading = ref(true);
+const router = useRouter();
+
+// 3. Creamos una instancia de Axios para no repetir la URL y los headers
+const apiClient = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api', // URL base de la API
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+  }
+});
+
+async function fetchDocuments() {
+  try {
+    const response = await apiClient.get('/documentos/');
+    documentos.value = response.data;
+  } catch (error) {
+    console.error("Error al cargar documentos:", error);
+    if (error.response && error.response.status === 401) {
+      logout();
+    }
+  } finally {
+    loading.value = false;
+  }
+}
+
+// 4. Función para manejar la subida de archivos
+async function handleFileUpload(event, docId) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    // Muestra un indicador de carga si lo deseas
+    loading.value = true;
+    await apiClient.post(`/documentos/${docId}/subir-cliente/`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    alert('Archivo subido con éxito!');
+    // Recarga los documentos para mostrar el archivo recién subido
+    await fetchDocuments();
+  } catch (error) {
+    console.error("Error al subir el archivo:", error);
+    alert('Hubo un error al subir el archivo.');
+  } finally {
+    loading.value = false;
+  }
+}
+
+function logout() {
+  localStorage.removeItem('accessToken');
+  router.push('/');
+}
+
+onMounted(fetchDocuments);
+</script>
+
+<style scoped>
+/* 5. Estilos para el contenedor principal y el fondo azul marino */
+.portal-container {
+  background-color: #0A2240; /* Azul marino oscuro y elegante */
+  min-height: 100vh;
+  padding: 40px;
+  color: #EFEFEF; /* Un color de texto blanco suave */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 40px auto;
+  transition: transform 0.3s ease-in-out, opacity 0.3s; /* Animación suave para el hover */
+}
+
+.logo:hover {
+  transform: scale(1.05); /* Agranda ligeramente el logo */
+  opacity: 0.9; /* Lo hace un poco transparente */
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #FFFFFF;
+  font-weight: 300; /* Una fuente más ligera y moderna */
+  font-size: 2.5em;
+}
+
+.logout-button {
+  background-color: #E53935; /* Rojo para la acción de salir */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #C62828;
+}
+
+/* 6. Estilos para la tabla de documentos */
+.documents-table-container {
+  background-color: #FFFFFF;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Necesario para que el border-radius afecte a la tabla */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  background-color: #F5F7FA;
+  color: #5A6A7A;
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  border-bottom: 2px solid #EAEFF5;
+}
+
+tbody td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #EAEFF5;
+}
+
+tbody tr:last-child td {
+  border-bottom: none; /* Quita el borde de la última fila */
+}
+
+/* 7. Estilos para los botones de acción dentro de la tabla */
+.action-button {
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.action-button.download {
+  background-color: #007BFF;
+  color: white;
+}
+.action-button.download:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.action-button.upload {
+  background-color: #28a745;
+  color: white;
+}
+.action-button.upload:hover {
+  background-color: #1e7e34;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.status-text {
+  color: #888;
+  font-style: italic;
+}
+
+/* Oculta el input de archivo original para estilizarlo con el label */
+.file-input {
+  display: none;
+}
+</style>
