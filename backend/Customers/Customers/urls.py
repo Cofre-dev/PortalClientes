@@ -27,16 +27,17 @@ from django.conf.urls.static import static
 
 #El router crea automaticamente las URLs para nuestro ViewSet
 router = routers.DefaultRouter()
-router.register(r'documentos', portal_views.DocumentoViewSet, basename='documento')
+router.register(r'categorias', portal_views.CategoriaDocumentoViewSet, basename='categoria')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #---- Endpoints de la API ----
-    path('api/', include(router.urls)),
     #---- Endpoints para autentixación JWT ----
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/me/', portal_views.ProfileView.as_view(), name='user-profile'),
+    path('api/archivos/<int:pk>/', portal_views.ArchivoSubidoDeleteView.as_view(), name='archivo-delete'),
+    #---- Endpoints de la API ----
+    path('api/', include(router.urls)),
 ]
 
 if settings.DEBUG:

@@ -5,4 +5,4 @@ from .models import *
 admin.site.register(Administrador)
 admin.site.register(Cliente)
 admin.site.register(TipoDocumento)
-admin.site.register(Documento)
+admin.site.register(CategoriaDocumento)

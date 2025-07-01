@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status, views
+from rest_framework import viewsets, status, views, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -33,9 +33,9 @@ class ProfileView(views.APIView):
         return Response({'Error': 'Perfil no encontrado'}, status=404)
 
 
-class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de viewsets.ModelViewSet
+class CategoriaDocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de viewsets.ModelViewSet
     #API endpoint que te permite ver y editar los documentos
-    serializer_class = DocumentoSerializer
+    serializer_class = CategoriaDocumentoSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
@@ -47,32 +47,30 @@ class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de
         
         #Si el usuario es administrador
         if hasattr(user, 'administrador'):
-            return Documento.objects.all().order_by('cliente__razon_social', 'tipo_documento__nombre')
+            return CategoriaDocumento.objects.all().order_by('cliente__razon_social', 'tipo_documento__nombre')
         
         elif hasattr(user, 'cliente'):
-            return Documento.objects.filter(cliente=user.cliente)
+            return CategoriaDocumento.objects.filter(cliente=user.cliente)
         
         #Si no es ninguno no devuelve nada
-        return Documento.objects.none()
+        return CategoriaDocumento.objects.none()
     
-    @action(detail=True, methods=['post'], url_path="subir-cliente")
-    def subir_archivo_cliente(self, request, pk=None):
-        """
-        Endpoint custom para que un cliente suba su archivo.
-        Se accederá desde /api/documentos/<id>/subir-cliente/
-        """
-        documento = self.get_object()
+           # --- NUEVO: Endpoint para subir archivos a una categoría ---
+    @action(detail=True, methods=['post'], url_path='upload-file')
+    def upload_file(self, request, pk=None):
+        categoria = self.get_object()
         archivo = request.data.get('file')
-        
+        subido_por = 'cliente' if hasattr(request.user, 'cliente') else 'consultora'
+
         if not archivo:
-            return Response({'Error': 'No se pudo subir el archivo, intente nuevamente.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        documento.archivo_cliente = archivo
-        documento.save()
-        
-        #Esto devuelve los datos actualizados del documento
-        serializers = self.get_serializer(documento)
-        return Response(serializers.data)
+            return Response({'error': 'No se envió ningún archivo.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        ArchivoSubido.objects.create(
+            categoria=categoria,
+            archivo=archivo,
+            subido_por=subido_por
+        )
+        return Response({'status': 'archivo subido'}, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'], url_path='subir-consultora')
     def subir_archivo_consultora(self, request, pk=None):
@@ -87,3 +85,10 @@ class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de
         
         serializers = self.get_serializer(documento)
         return Response(serializers.data)
+    
+    # --- NUEVO: Vista para borrar un archivo específico ---
+class ArchivoSubidoDeleteView(generics.DestroyAPIView):
+        queryset = ArchivoSubido.objects.all()
+        permission_classes = [IsAuthenticated]
+        # Aquí podrías añadir lógica de permisos extra para asegurar que solo
+        # el admin o el dueño del cliente puedan borrar.
