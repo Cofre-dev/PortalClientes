@@ -31,14 +31,12 @@ router.register(r'documentos', portal_views.DocumentoViewSet, basename='document
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
     #---- Endpoints de la API ----
-    path('api/', include(router.urls)), 
-    
+    path('api/', include(router.urls)),
     #---- Endpoints para autentixación JWT ----
-    path('api/me/', portal_views.ProfileView.as_view(), name='user-profile'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/me/', portal_views.ProfileView.as_view(), name='user-profile'),
 ]
 
 if settings.DEBUG:

@@ -43,12 +43,11 @@ class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de
         Este método filtra todos los documentos para devolver exclusivamente los documentos del cliente
         que los esta solicitando
         """
-        #Ojo con esta linea!!!
         user = self.request.user
         
         #Si el usuario es administrador
         if hasattr(user, 'administrador'):
-            return Documento.objects.filter(cliente__in=user.administrador.clientes_asignados.all())
+            return Documento.objects.all().order_by('cliente__razon_social', 'tipo_documento__nombre')
         
         elif hasattr(user, 'cliente'):
             return Documento.objects.filter(cliente=user.cliente)
@@ -72,5 +71,19 @@ class DocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de
         documento.save()
         
         #Esto devuelve los datos actualizados del documento
-        serializers = self.get_serializers(documento)
+        serializers = self.get_serializer(documento)
+        return Response(serializers.data)
+
+    @action(detail=True, methods=['post'], url_path='subir-consultora')
+    def subir_archivo_consultora(self, request, pk=None):
+        
+        documento = self.get_object()
+        archivo = request.data.get('file')
+        if not archivo:
+            return Response({'error:' 'No se logro subir ningun archivo'}, status=status.HTTP_400_BAD_REQUEST)
+
+        documento.archivo_consultora = archivo
+        documento.save()
+        
+        serializers = self.get_serializer(documento)
         return Response(serializers.data)

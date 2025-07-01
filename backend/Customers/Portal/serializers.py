@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import * 
 
-
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
@@ -13,11 +12,11 @@ class TipoDocumentoSerializer(serializers.ModelSerializer):
         fields = ['nombre', 'codigo']
         
        
-# MODIFICADO: DocumentoSerializer ahora incluye los datos del cliente
+#DocumentoSerializer ahora incluye los datos del cliente
 class DocumentoSerializer(serializers.ModelSerializer):
     tipo_documento = TipoDocumentoSerializer(read_only=True)
     
-    # AÑADIDO: Esta línea adjunta la información del cliente a cada documento.
+    #Esta línea adjunta la información del cliente a cada documento.
     cliente = ClienteSerializer(read_only=True)
     
     archivo_consultora = serializers.FileField(use_url=True, read_only=True)
@@ -25,5 +24,4 @@ class DocumentoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Documento
-        # Asegúrate de incluir 'cliente' en los fields
         fields = ['id', 'cliente', 'tipo_documento', 'archivo_consultora', 'archivo_cliente', 'fecha_actualizacion']
