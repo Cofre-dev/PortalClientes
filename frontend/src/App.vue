@@ -21,14 +21,44 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+html, body {
+  overflow-x: auto;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f4f7fb; /* o tu color base */
+  font-family: 'Segoe UI', sans-serif;
+   line-height: 1.5;
+  padding: 40px; 
+  min-height: 100vh;
+  width: 42vw;
+  box-sizing: border-box;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+header {
+  background-color: #000000;
+  line-height: 1.5;
+  padding: 40px; 
+  min-height: 100vh;
+  width: 42vw;
+  box-sizing: border-box;
+}
+
+ .logo {
+  max-width: 500px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+.logo:delay{
+  transition-duration: 2s;
+  transition-delay: 2s;
 }
 
 nav {

@@ -15,9 +15,9 @@
     <div v-if="loading" class="loading-spinner">
       <i class="fas fa-spinner fa-spin"></i> Cargando documentos...
     </div>
-
+    
     <div v-else class="documents-table-container">
-      <table>
+      <table class="tabla-responsive">
         <thead>
           <tr>
             <th style="width: 5%;"></th> <!-- Columna para el ícono de desplegar -->
@@ -215,8 +215,12 @@ onMounted(fetchCategorias);
   --border-color: #EAEFF5;
 }
 .dashboard-container {
-   padding: 40px; 
-   font-family: 'Segoe UI', sans-serif;
+  padding: 40px; 
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  width: 45vw;
+  background: linear-gradient(to right, #2bd17b, rgb(6, 22, 94));
+  box-sizing: border-box;
 }
 .header {
   display: flex;
@@ -226,10 +230,12 @@ onMounted(fetchCategorias);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 20px;
 }
+
 h1 { color: #FFFFFF;
    font-weight: 300;
     margin: 0;
 }
+
 .profile-info {
   display: flex; 
   align-items: center;
@@ -269,11 +275,16 @@ h1 { color: #FFFFFF;
 }
 
 .documents-table-container { 
+  overflow-x: auto;
   background-color: #152748;
   color: var(--text-color);
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+}
+
+.tabla-responsive{
+  overflow-x: auto;
 }
 
 table {
@@ -480,7 +491,7 @@ tbody tr:last-child td {
   color: white;
 }
 
-.button-danger:disabled {
+.button-danger:hover {
   background-color: #c82333;
   opacity: 0.7;
   cursor: not-allowed;
