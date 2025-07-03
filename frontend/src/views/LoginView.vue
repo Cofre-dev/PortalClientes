@@ -32,7 +32,9 @@
   async function login() {
     error.value = null;
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+      // const response = await axios.post('http://127.0.0.1:8000/api/token/'
+      const path = import.meta.env.VITE_API_URL + "/api/token/";
+      const response = await axios.post(path, {
         username: username.value,
         password: password.value,
       });

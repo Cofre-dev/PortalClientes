@@ -151,7 +151,8 @@ const props = defineProps({
 const categorias = ref([]);
 const loading = ref(true);
 const router = useRouter();
-const backendUrl = 'http://127.0.0.1:8000';
+// const backendUrl = 'http://127.0.0.1:8000';
+const backendUrl = import.meta.env.VITE_API_URL;
 
 const openCategories = ref(new Set());
 const showDeleteModal = ref(false);

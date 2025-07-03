@@ -145,7 +145,8 @@ const fileToDeleteId = ref(null);
 const isDeleting = ref(false);
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  // baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: import.meta.env.VITE_API_URL + "/api",
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
   }
