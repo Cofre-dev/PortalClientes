@@ -1,14 +1,26 @@
 <template>
   <div class="dashboard-container">
+
     <div class="header">
       <h1>Panel de Administrador</h1>
+
       <div class="profile-info">
-        <span>{{ profile.full_name || profile.username }} (<strong>{{ profile.role_detail }}</strong>)</span>
+        <span>
+          <p>Usuario:   <span>
+            {{ profile.full_name || profile.username }}
+            (<strong>
+              {{ profile.role_detail }}
+            </strong>)
+          </span> </p>
+        </span>
+
         <button @click="logout" class="logout-button">
           <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
         </button>
       </div>
+
     </div>
+
     <p class="subtitle">Revise y gestione los documentos de todos los clientes.</p>
 
     <!-- Indicador de Carga Principal -->
@@ -17,28 +29,38 @@
     </div>
     
     <div v-else class="documents-table-container">
-      <table class="tabla-responsive">
+      <table>
         <thead>
           <tr>
-            <th style="width: 5%;"></th> <!-- Columna para el ícono de desplegar -->
-            <th>Cliente</th>
-            <th>Tipo de Documento</th>
+            <th class="text-center" style="width: 5%;"></th> 
+            <th class="text-center">Cliente</th>
+            <th class="text-center">Tipo de Documento</th>
             <th class="text-center">Archivos</th>
             <th class="text-center">Acción Rápida</th>
           </tr>
         </thead>
+
         <!-- Usamos un template para poder tener dos <tr> por cada categoría -->
         <template v-for="categoria in categorias" :key="categoria.id">
-          <!-- Fila principal de la categoría -->
+          <!--Encabezados-->
           <tr class="category-row" @click="toggleCategory(categoria.id)">
+
             <td class="text-center">
               <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </td>
-            <td>{{ categoria.cliente.razon_social }}</td>
-            <td>{{ categoria.tipo_documento.nombre }}</td>
+
+            <td class="text-center">
+              {{ categoria.cliente.razon_social }}
+            </td>
+
+            <td class="text-center">
+              {{ categoria.tipo_documento.nombre }}
+            </td>
+
             <td class="text-center">
               <span class="file-count-badge">{{ categoria.archivos.length }}</span>
             </td>
+
             <td class="text-center">
               <label class="action-button upload small">
                 <i class="fas fa-upload"></i> Subir
@@ -46,48 +68,67 @@
               </label>
             </td>
           </tr>
+
           <!-- Fila desplegable con la lista de archivos -->
           <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
             <td colspan="5">
               <div class="files-list">
+                <!--Si no hay archivos se mostrará este fragmento de código-->
                 <div v-if="categoria.archivos.length === 0" class="no-files">
                   <i class="fas fa-folder-open"></i> No hay archivos en esta categoría.
                 </div>
+
+                <!--Cuando se despliegue la lista, se mostrará este código que renderiza los archivos a mostrar-->
                 <ul>
                   <li v-for="archivo in categoria.archivos" :key="archivo.id">
+
                     <span class="file-info">
                       <i class="fas fa-file-alt"></i>
-                      {{ archivo.archivo.split('/').pop() }}
+                        {{ archivo.archivo.split('/').pop() }}
                       <small> (subido por: {{ archivo.subido_por }})</small>
                     </span>
+
                     <div class="file-actions">
-                      <button @click="downloadFile(archivo.archivo)" class="action-button download small">
+
+                      <button @click="downloadFile(archivo.archivo)"                  class="action-button download small">
                         <i class="fas fa-download"></i> Descargar
                       </button>
-                      <button @click="confirmDelete(archivo.id)" class="action-button delete small">
+
+                      <button @click="confirmDelete(archivo.id)" class="action-button  delete small">
                         <i class="fas fa-trash-alt"></i> Borrar
                       </button>
+
                     </div>
+
                   </li>
                 </ul>
+
               </div>
             </td>
           </tr>
         </template>
+
       </table>
     </div>
 
     <!-- Modal de confirmación para borrar (mejorado) -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
       <div class="modal-content">
+
         <h4><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h4>
+
         <p>¿Está seguro de que desea borrar este archivo? Esta acción no se puede deshacer.</p>
+
         <div class="modal-actions">
-          <button @click="showDeleteModal = false" class="button-secondary">Cancelar</button>
+          <button @click="showDeleteModal = false" class="button-secondary">
+            Cancelar
+          </button>
+
           <button @click="deleteFile" class="button-danger" :disabled="isDeleting">
             <i v-if="isDeleting" class="fas fa-spinner fa-spin"></i>
             <span v-else>Sí, Borrar</span>
           </button>
+
         </div>
       </div>
     </div>
@@ -215,14 +256,19 @@ onMounted(fetchCategorias);
   --border-color: #EAEFF5;
 }
 .dashboard-container {
-  padding: 40px; 
+   padding: 50px; 
+  justify-content: center;  
   font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
-  width: 45vw;
+  width: 850px;
   background: linear-gradient(to right, #2bd17b, rgb(6, 22, 94));
   box-sizing: border-box;
+  /* height: 100px; */
+  margin-left: 580px;
 }
+
 .header {
+  height: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -231,12 +277,18 @@ onMounted(fetchCategorias);
   padding-bottom: 20px;
 }
 
-h1 { color: #FFFFFF;
-   font-weight: 300;
-    margin: 0;
+.login-wrapper{
+  width: 300x;
+}
+
+h1 { 
+  color: #FFFFFF;
+  font-weight: 300;
+  margin: 0;
 }
 
 .profile-info {
+  font-size: 1.4rem;
   display: flex; 
   align-items: center;
   gap: 20px;
@@ -244,19 +296,21 @@ h1 { color: #FFFFFF;
 }
 
 .subtitle { 
-  color: #B0C4DE;
+  font-weight: bold;
+  color: #0a0a0a;
   margin-bottom: 30px;
-  font-size: 1.1em;
+  font-size: 1.3em;
 }
 
 .logout-button {
+  font-weight: bold;
    background-color: transparent;
    border: 1px solid #E53935;
-   color: #E53935;
+   color: white;
    padding: 10px 20px;
    border-radius: 5px;
-   cursor: pointer;
-   transition: all 0.3s;
+   cursor: no-drop;
+   transition: all 0.1s;
 }
 
 .logout-button:hover {
@@ -277,14 +331,10 @@ h1 { color: #FFFFFF;
 .documents-table-container { 
   overflow-x: auto;
   background-color: #152748;
-  color: var(--text-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: white;
+  border-radius: 10px;
+  box-shadow: linear-gradient(to right, #2bd17b, rgb(6, 22, 94));
   overflow: hidden;
-}
-
-.tabla-responsive{
-  overflow-x: auto;
 }
 
 table {
@@ -292,6 +342,7 @@ table {
    border-collapse: collapse;
 }
 
+/* Encabezados de la tabla principal */
 thead th { 
   background-color: var(--light-grey);
   color: var(--dark-grey);
@@ -309,7 +360,8 @@ thead th {
 }
 
 .category-row:hover {
-   background-color: var(--light-grey);
+  /* #10055c */
+  background-color: #1637dc;
 }
 
 tbody td {
@@ -334,8 +386,9 @@ tbody tr:last-child td {
   font-size: 0.8em;
 }
 
+/*Filas de la tabla cuando se despliega */
 .files-row td { 
-  background-color: #0e1c67;
+  background-color: #172978;
   padding: 0;
 }
 
@@ -408,12 +461,12 @@ tbody tr:last-child td {
 }
 
 .action-button.upload {
-  background-color: #17a2b8;
+  background-color: #0a1a5f;
   color: white;
 }
 
 .action-button.upload:hover {
-  background-color: #117a8b;
+  background-color: #1c44a9;
 }
 
 .action-button.delete {

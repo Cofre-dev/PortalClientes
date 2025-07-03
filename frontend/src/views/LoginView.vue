@@ -7,25 +7,13 @@
 
     <div class="right-panel">
       <div class="login-card">
-        <h1 class="title">Acceso Portal Clientes</h1>
+        <h1 class="title">Acceso al Portal De Clientes</h1>
           <input v-model="username" type="text" placeholder="Nombre de usuario" class="input" />
           <input v-model="password" type="password" placeholder="Contraseña" class="input" />
           <button @click="login" class="login-button">Ingresar</button>
           <p v-if="error" class="error-message">{{ error }}</p>
       </div>
     </div>
-
-      <!-- <input v-model="username" type="text" placeholder="Nombre de usuario" class="input" />
-      <input v-model="password" type="password" placeholder="Contraseña" class="input" /> -->
-
-      <!-- <button @click="login" class="login-button">
-        <i class="fas fa-sign-in-alt"></i> Ingresar
-      </button> -->
-
-      <p v-if="error" class="error-message">
-        <i class="fas fa-exclamation-triangle"></i> {{ error }}
-      </p>
-
 
     </div>
   </div>
@@ -52,10 +40,11 @@
       localStorage.setItem('accessToken', response.data.access);
       router.push('/portal');
     } catch (err) {
-      error.value = 'RUT o contraseña incorrectos.';
+      error.value = 'Usuario o contraseña incorrectos.';
       console.error('Error de autenticación:', err);
     }
   }
+
 </script>
 
 <style scoped>
@@ -80,8 +69,8 @@ html, body {
   }
 
   .login-wrapper {
-    height: 10vh;
-    width: 45vw;
+    height: 75px;
+    width: 380%;
     display: flex;
     align-items: center;
     justify-content: center;

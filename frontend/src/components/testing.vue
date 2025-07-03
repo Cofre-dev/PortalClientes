@@ -1,12 +1,14 @@
 <template>
   <div class="dashboard-container">
     <div class="header">
-      <h1>Portal de Cliente</h1>
+      <h1>Portal para lientes</h1>
+
+      <button @click="logout" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+
       <div class="profile-info">
-        <span>Bienvenido, <strong>{{ profile.company_name }}</strong></span>
-        <button @click="logout" class="logout-button">
-          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </button>
+        <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
       </div>
     </div>
 
@@ -20,22 +22,28 @@
       <table>
         <thead>
           <tr>
-            <th style="width: 5%;"></th>
-            <th>Tipo de Documento</th>
+            <th class="text-center" style="width: 5%;"></th> <!-- Columna para el ícono de desplegar -->
+            <th class="text-center">Cliente</th>
+            <th class="text-center">Tipo de Documento</th>
             <th class="text-center">Archivos</th>
             <th class="text-center">Acción Rápida</th>
           </tr>
         </thead>
 
         <template v-for="categoria in categorias" :key="categoria.id">
+          <!-- Fila principal de la categoría -->
           <tr class="category-row" @click="toggleCategory(categoria.id)">
 
             <td class="text-center">
               <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </td>
 
-            <td>
-                {{ categoria.tipo_documento.nombre }}
+            <td class="text-center">
+              {{ categoria.cliente.razon_social }}
+            </td>
+            
+            <td class="text-center">
+              {{ categoria.tipo_documento.nombre }}
             </td>
 
             <td class="text-center">
@@ -48,54 +56,45 @@
                 <input type="file" @change="handleUpload($event, categoria.id)" class="file-input">
               </label>
             </td>
-          </tr>
 
+          </tr>
+          <!-- Fila desplegable con la lista de archivos -->
           <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
-            <td colspan="4">
+            <td colspan="5">
               <div class="files-list">
 
                 <div v-if="categoria.archivos.length === 0" class="no-files">
                   <i class="fas fa-folder-open"></i> No hay archivos en esta categoría.
                 </div>
 
-                <table v-else class="files-table">
-                  <thead>
-                    <tr>
-                      <th>Nombre del Archivo</th>
-                      <th>Subido Por</th>
-                      <th class="text-center">Descargar</th>
-                      <th class="text-center">Borrar</th>
-                    </tr>
-                  </thead>
-
+                <table v-else class="files-tables"> 
                   <tbody>
                     <tr v-for="archivo in categoria.archivos" :key="archivo.id">
+
                       <td>
                         <i class="fas fa-file-alt"></i> {{ archivo.archivo.split('/').pop() }}
                       </td>
 
                       <td>
                         <span class="uploader-badge" :class="archivo.subido_por">
-                          {{ archivo.subido_por }}
+                          {{'subido por: ' +  archivo.subido_por }}
                         </span>
                       </td>
 
                       <td class="text-center">
-                        <button @click="triggerDownload(archivo.archivo)" class="action-button download small" title="Descargar archivo">
+                        <button @click="triggerDownload(archivo.archivo)" class="action-button download" title="Descargar archivo">
                           <i class="fas fa-download"></i>
                         </button>
                       </td>
 
                       <td class="text-center">
-                        <!-- El cliente solo puede borrar los archivos que él mismo subió -->
-                        <button v-if="archivo.subido_por === 'cliente'" @click="confirmDelete(archivo.id)" class="action-button delete small" title="Borrar archivo">
+                        <button v-if="archivo.subido_por === 'cliente'" @click="confirmDelete(archivo.id)" class="action-button delete" title="Borrar archivo">
                           <i class="fas fa-trash-alt"></i>
                         </button>
                       </td>
-                      
+
                     </tr>
                   </tbody>
-
                 </table>
               </div>
             </td>
@@ -119,9 +118,11 @@
       </div>
     </div>
   </div>
-</template>
+  
+  </template>
 
 <script setup>
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -175,7 +176,6 @@ async function triggerDownload(fileUrl) {
 async function fetchCategorias() {
   loading.value = true;
   try {
-    // La API ya sabe que es un cliente, así que solo le devolverá sus categorías
     const response = await apiClient.get('/categorias/');
     categorias.value = response.data;
   } catch (error) {
@@ -230,19 +230,29 @@ onMounted(fetchCategorias);
 </script>
 
 <style scoped>
-/* Los estilos son idénticos a los del DashboardAdmin para mantener la consistencia */
+/* CSS Limpio y con el formato solicitado */
 :root {
-  --primary-color: #007BFF;
+  --primary-color: #0d6efd;
   --danger-color: #dc3545;
-  --dark-grey: #5A6A7A;
-  --light-grey: #F5F7FA;
-  --text-color: #333;
-  --border-color: #EAEFF5;
+  --success-color: #198754;
+  --info-color: #0dcaf0;
+  --dark-grey: #6c757d;
+  --light-grey: #f8f9fa;
+  --text-color: #212529;
+  --border-color: #dee2e6;
+  --gradient-start: #2bd17b;
+  --gradient-end: rgb(6, 22, 94);
+  --table-dark-bg: #092c61;
+  --table-dark-header-bg: #0c3d7a;
+  --table-dark-text: #a0b3d1;
 }
 
 .dashboard-container {
   padding: 40px;
   font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
 }
 .header {
   display: flex;
@@ -258,6 +268,7 @@ h1 {
   margin: 0;
 }
 .profile-info {
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -281,7 +292,6 @@ h1 {
   background-color: #E53935;
   color: white;
 }
-
 .loading-spinner {
   text-align: center;
   padding: 50px;
@@ -291,12 +301,11 @@ h1 {
 .loading-spinner .fa-spinner {
   margin-right: 10px;
 }
-
 .documents-table-container {
-  background-color: #FFFFFF;
+  background-color: #09125f;
   color: var(--text-color);
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 table {
@@ -318,7 +327,7 @@ thead th {
   transition: background-color 0.2s;
 }
 .category-row:hover {
-  background-color: var(--light-grey);
+  background-color: #2eae57;
 }
 tbody td {
   padding: 15px 20px;
@@ -330,103 +339,124 @@ tbody tr:last-child td {
 }
 .chevron-icon {
   transition: transform 0.3s;
+  color: var(--dark-grey);
 }
-
 .file-count-badge {
   background-color: var(--dark-grey);
   color: white;
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 0.8em;
+  font-weight: bold;
+}
+.files-row td {
+  background-color: var(--table-dark-bg);
+  padding: 0;
+}
+.files-tables {
+  border-collapse: separate;
+  border-spacing: 0 10px; /* espacio entre filas */
+  width: 100%;
 }
 
-.files-row td {
-  background-color: #fafafa;
-  padding: 10px 20px;
+.files-tables tr {
+  background-color: #06285c;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  overflow: hidden;
 }
-.files-list {
-  padding: 0;
+
+.files-tables td {
+  padding: 12px 16px;
+  color: white;
 }
 .no-files {
   text-align: center;
   padding: 20px;
-  color: #888;
+  color: var(--table-dark-text);
 }
-
-/* --- ESTILOS PARA LA TABLA ANIDADA --- */
 .files-table {
+  background-color: var(--table-dark-bg);
   width: 100%;
-  margin-top: 10px;
+  color: white;
 }
 .files-table th {
-  background-color: #e9ecef;
+  background-color: var(--table-dark-bg);
   font-size: 0.75em;
-  padding: 10px;
+  padding: 10px 15px;
+  color: var(--table-dark-text);
+  border-bottom: 1px solid var(--table-dark-header-bg);
 }
 .files-table td {
-  padding: 10px;
+  padding: 12px 15px;
   font-size: 0.9em;
   vertical-align: middle;
-  /* CAMBIO: Se añade un borde inferior para separar cada archivo */
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--table-dark-header-bg);
 }
-/* CAMBIO: Se elimina el borde de la última fila para un acabado limpio */
 .files-table tbody tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 .files-table td .fas {
-  margin-right: 8px;
-  color: var(--dark-grey);
+  margin-right: 10px;
+  color: var(--table-dark-text);
+  font-size: 1.1em;
 }
 .uploader-badge {
-  padding: 3px 8px;
-  border-radius: 4px;
+  padding: 4px 9px;
+  border-radius: 5px;
   color: white;
   font-size: 0.8em;
+  font-weight: 500;
   text-transform: capitalize;
 }
 .uploader-badge.cliente {
-  background-color: #28a745;
+  background-color: var(--success-color);
 }
 .uploader-badge.consultora {
-  background-color: #17a2b8;
+  background-color: var(--info-color);
 }
-
 .action-button {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: 5px;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   text-decoration: none;
-  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
+  transition: all 0.2s ease-in-out;
   border: none;
-  font-family: inherit;
-  font-size: 0.9em;
+  font-size: 1em;
 }
 .action-button.download {
-  background-color: var(--primary-color);
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
 }
 .action-button.download:hover {
-  background-color: #0056b3;
-}
-.action-button.upload {
-  background-color: #28a745;
-  color: white;
-}
-.action-button.upload:hover {
-  background-color: #1e7e34;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
 }
 .action-button.delete {
-  background-color: var(--danger-color);
-  color: white;
+  background-color: rgba(255, 82, 82, 0.1);
+  color: #ff8a8a;
 }
 .action-button.delete:hover {
-  background-color: #c82333;
+  background-color: var(--danger-color);
+  color: white;
+  transform: scale(1.1);
+}
+.action-button.upload {
+  background-color: var(--success-color);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  width: auto;
+  height: auto;
+  gap: 5px;
+}
+.action-button.upload:hover {
+  background-color: #1b975d;
 }
 .file-input {
   display: none;
@@ -434,8 +464,6 @@ tbody tr:last-child td {
 .text-center {
   text-align: center;
 }
-
-/* Estilos para el Modal de Confirmación */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -449,13 +477,14 @@ tbody tr:last-child td {
   z-index: 1000;
 }
 .modal-content {
-  background: white;
+  background: #051f46;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.3);
   width: 90%;
   max-width: 450px;
   text-align: center;
+  color: white;
 }
 .modal-content h4 {
   margin-top: 0;
@@ -463,7 +492,7 @@ tbody tr:last-child td {
 }
 .modal-content p {
   margin-bottom: 25px;
-  color: var(--text-color);
+  color: #d0d0d0;
 }
 .modal-actions {
   display: flex;
@@ -478,8 +507,8 @@ tbody tr:last-child td {
   font-weight: bold;
 }
 .button-secondary {
-  background-color: #ccc;
-  color: #333;
+  background-color: #6c757d;
+  color: white;
 }
 .button-danger {
   background-color: var(--danger-color);
@@ -490,4 +519,5 @@ tbody tr:last-child td {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
 </style>
