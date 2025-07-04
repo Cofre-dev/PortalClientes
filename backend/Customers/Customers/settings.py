@@ -167,13 +167,13 @@ REST_FRAMEWORK = {
 #     "https://portalclientesaraybustamante.netlify.app",
 # ]
 
-CORS_TRUSTED_ORIGIN = [
+CORS_TRUSTED_ORIGINS = [
     "https://portalclientesaraybustamante.netlify.app",
 ]
 
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
 if FRONTEND_URL:
-    CORS_TRUSTED_ORIGIN.append(FRONTEND_URL)
+    CORS_TRUSTED_ORIGINS.append(FRONTEND_URL)
 
 # URL que se usará para acceder a los archivos subidos
 MEDIA_URL = '/media/'
