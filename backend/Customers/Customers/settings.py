@@ -157,16 +157,24 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',)
 }
 
-# backend/Customers/settings.py
+# ============================================
+# CONFIGURACIÓN CORS - CORREGIDA
+# ============================================
 
-# Agrega esta lista al final del archivo para el desarrollo con VUEJS
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173", 
-#     "http://127.0.0.1:5173",
-#     "https://portalclientesaraybustamante.netlify.app",
-# ]
+# Para desarrollo - permite todos los orígenes
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
+else:
+    # Para producción - especifica los orígenes permitidos
+    CORS_ALLOWED_ORIGINS = [
+        "https://portalclientesaraybustamante.netlify.app",
+        "http://localhost:5173",  # Para desarrollo local
+        "http://127.0.0.1:5173",  # Para desarrollo local
+    ]
 
-#Original
+# CORS_TRUSTED_ORIGINS es diferente a CORS_ALLOWED_ORIGINS
+# CORS_TRUSTED_ORIGINS es para formularios Django, no para API
 CORS_TRUSTED_ORIGINS = [
     "https://portalclientesaraybustamante.netlify.app",
     "http://localhost:5173",
@@ -205,14 +213,16 @@ CORS_EXPOSE_HEADERS = [
     'X-CSRFToken',
 ]
 
-if DEBUG:
-    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
-
-#CORS_ALLOW_ALL_ORIGINS = True
-
+# Agregar URL del frontend desde variable de entorno
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
 if FRONTEND_URL:
-    #CORS_TRUSTED_ORIGINS.append(FRONTEND_URL)
+    if not DEBUG:  # Solo en producción
+        if FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+    if FRONTEND_URL not in CORS_TRUSTED_ORIGINS:
+        CORS_TRUSTED_ORIGINS.append(FRONTEND_URL)
+    
+    # Agregar el dominio a ALLOWED_HOSTS
     from urllib.parse import urlparse
     parsed_url = urlparse(FRONTEND_URL)
     if parsed_url.netloc not in ALLOWED_HOSTS:
