@@ -20,7 +20,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -32,7 +31,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 #Añade aquí la futura URL de tu frontend (Netlify) y tu backend (Render)
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'portalclientes.onrender.com',
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -166,17 +167,57 @@ REST_FRAMEWORK = {
 # ]
 
 #Original
-# CORS_TRUSTED_ORIGINS = [
-#     "https://portalclientesaraybustamante.netlify.app",
-#     "http://localhost:5173",
-#     "http://127.0.0.1:5173",
-# ]
+CORS_TRUSTED_ORIGINS = [
+    "https://portalclientesaraybustamante.netlify.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# Headers permitidos
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
-# FRONTEND_URL = os.environ.get('FRONTEND_URL')
-# if FRONTEND_URL:
-#     CORS_TRUSTED_ORIGINS.append(FRONTEND_URL)
+# Métodos permitidos
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Permitir cookies y credenciales
+CORS_ALLOW_CREDENTIALS = True
+
+# Si necesitas permitir headers específicos
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+]
+
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
+
+#CORS_ALLOW_ALL_ORIGINS = True
+
+FRONTEND_URL = os.environ.get('FRONTEND_URL')
+if FRONTEND_URL:
+    #CORS_TRUSTED_ORIGINS.append(FRONTEND_URL)
+    from urllib.parse import urlparse
+    parsed_url = urlparse(FRONTEND_URL)
+    if parsed_url.netloc not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(parsed_url.netloc)
+
 
 # URL que se usará para acceder a los archivos subidos
 MEDIA_URL = '/media/'

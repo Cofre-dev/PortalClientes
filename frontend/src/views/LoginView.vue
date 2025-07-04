@@ -42,9 +42,17 @@ import { loadEnvFile } from 'process';
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
       const path = `${baseUrl}/api/token/`;
 
+      console.log("URL de la API:", path)
+
       const response = await axios.post(path, {
         username: username.value,
         password: password.value,
+      }, {
+        headers: {
+          "Content-Type": 'application/json',
+          "Accept":'application/json',
+        },
+        withCredentials: false,
       });
 
       console.log("si vemos esto, la api responde bien")
