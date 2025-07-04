@@ -24,9 +24,10 @@
   import axios from 'axios';
   import { useRouter } from 'vue-router';
 
+  const loading = ref(false);
+  const error = ref(null);
   const username = ref('');
   const password = ref('');
-  const error = ref(null);
   const router = useRouter();
 
   async function login() {
@@ -34,16 +35,19 @@
     error.value = null;
     try {
       // const response = await axios.post('http://127.0.0.1:8000/api/token/'
-      const path = import.meta.env.VITE_API_URL + "api/token/";
+      const path = `${import.meta.env.VITE_API_URL}/api/token/`;
       console.log("logramos acceder?")
+
       const response = await axios.post(path, {
         username: username.value,
         password: password.value,
       });
 
       console.log("si vemos esto, la api responde bien")
+
       localStorage.setItem('accessToken', response.data.access);
       router.push('/portal');
+
     } catch (err) {
       error.value = 'Usuario o contraseña incorrectos.';
       console.error('Error de autenticación:', err);
