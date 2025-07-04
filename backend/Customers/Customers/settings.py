@@ -166,7 +166,7 @@ REST_FRAMEWORK = {
 # ]
 
 CORS_TRUSTED_ORIGINS = [
-    "https://portalclientesaraybustamante.netlify.app/",
+    "https://portalclientesaraybustamante.netlify.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
