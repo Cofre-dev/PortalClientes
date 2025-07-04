@@ -165,11 +165,14 @@ REST_FRAMEWORK = {
 #     "https://portalclientesaraybustamante.netlify.app",
 # ]
 
-CORS_TRUSTED_ORIGINS = [
-    "https://portalclientesaraybustamante.netlify.app",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+#Original
+# CORS_TRUSTED_ORIGINS = [
+#     "https://portalclientesaraybustamante.netlify.app",
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # FRONTEND_URL = os.environ.get('FRONTEND_URL')
 # if FRONTEND_URL:
