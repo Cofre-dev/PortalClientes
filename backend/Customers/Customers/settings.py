@@ -29,10 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEGUB', 'False').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 #Añade aquí la futura URL de tu frontend (Netlify) y tu backend (Render)
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "https://portalclientesaraybustamante.netlify.app",
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -78,6 +80,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.django',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -89,7 +92,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Customers.wsgi.application'
 
 
-# Database
+# default Database 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # DATABASES = {
@@ -158,15 +161,19 @@ REST_FRAMEWORK = {
 # backend/Customers/settings.py
 
 # Agrega esta lista al final del archivo para el desarrollo con VUEJS
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", 
-    "http://127.0.0.1:5173",
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173", 
+#     "http://127.0.0.1:5173",
+#     "https://portalclientesaraybustamante.netlify.app",
+# ]
+
+CORS_TRUSTED_ORIGIN = [
     "https://portalclientesaraybustamante.netlify.app",
 ]
 
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
 if FRONTEND_URL:
-    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+    CORS_TRUSTED_ORIGIN.append(FRONTEND_URL)
 
 # URL que se usará para acceder a los archivos subidos
 MEDIA_URL = '/media/'
