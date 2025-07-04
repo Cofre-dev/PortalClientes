@@ -40,7 +40,7 @@ import { loadEnvFile } from 'process';
       // const path = `${import.meta.env.VITE_API_URL}api/token/`;
 
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
-      const path = `${baseUrl}api/token/`;
+      const path = `${baseUrl}/api/token/`;
 
       const response = await axios.post(path, {
         username: username.value,
