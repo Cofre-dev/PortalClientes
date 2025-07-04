@@ -159,9 +159,13 @@ REST_FRAMEWORK = {
 
 # Agrega esta lista al final del archivo para el desarrollo con VUEJS
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", # La URL por defecto del servidor de desarrollo de Vue
+    "http://localhost:5173", 
     "http://127.0.0.1:5173",
 ]
+
+FRONTEND_URL = os.environ.get('FRONTEND_URL')
+if FRONTEND_URL:
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
 
 # URL que se usará para acceder a los archivos subidos
 MEDIA_URL = '/media/'
