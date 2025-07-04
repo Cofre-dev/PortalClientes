@@ -32,9 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 #Añade aquí la futura URL de tu frontend (Netlify) y tu backend (Render)
-ALLOWED_HOSTS = [
-    "https://portalclientesaraybustamante.netlify.app",
-]
+ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -168,7 +166,9 @@ REST_FRAMEWORK = {
 # ]
 
 CORS_TRUSTED_ORIGINS = [
-    "https://portalclientesaraybustamante.netlify.app",
+    "https://portalclientesaraybustamante.netlify.app/",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
