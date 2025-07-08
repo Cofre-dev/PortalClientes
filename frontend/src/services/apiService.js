@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://127.0.0.1:8000';
+
 // 1. Creamos una instancia de Axios con la configuración base.
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api', // Apunta a la raíz de tu API
+  // baseURL: 'http://127.0.0.1:8000/api', // Apunta a la raíz de tu API
+  // baseURL: 'https://portalclientes.onrender.com'
+  baseURL: `${API_BASE_URL}/api`,
 });
 
 // 2. Usamos un "interceptor" para añadir el token de autenticación a CADA petición.
@@ -25,7 +29,7 @@ export default {
   // --- Autenticación ---
   login(credentials) {
     // El login es especial, no usa el apiClient porque no tiene el token aún.
-    return axios.post('http://127.0.0.1:8000/api/token/', credentials);
+    return axios.post(`${API_BASE_URL}/api/token/`, credentials);
   },
   getProfile() {
     return apiClient.get('/me/');
@@ -46,7 +50,7 @@ export default {
     return apiClient.delete(`/archivos/${archivoId}/`);
   },
   
-  // La descarga es especial porque necesita la URL completa y una respuesta tipo 'blob'
+  // La descarga usa axios porque la url esta completa:)
   downloadFile(fileUrl) {
     return axios.get(fileUrl, {
       responseType: 'blob',
