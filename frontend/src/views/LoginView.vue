@@ -53,7 +53,7 @@ import { loadEnvFile } from 'process';
           "Content-Type": 'application/json',
           "Accept":'application/json',
         },
-        withCredentials: false,
+        withCredentials: true,
       });
 
       console.log("si vemos esto, la api responde bien")
