@@ -1,20 +1,19 @@
 <template>
   <div class="login-wrapper">
     <div class="login-card">
-      <!-- <img src="/logo.png" alt="Logo Ara & Bustamante" class="logo" /> -->
-
-      <!-- <h1 class="title">Acceso Portal Clientes <br /> Ara y Bustamante</h1> -->
 
     <div class="right-panel">
       <div class="login-card">
         <h1 class="title">Acceso al Portal De Clientes</h1>
-          <input v-model="username" type="text" placeholder="Nombre de usuario" class="input" />
-          <input v-model="password" type="password" placeholder="Contraseña" class="input" />
+          <input v-model="username" type="text" placeholder="Nombre de usuario" class="input" required/>
+
+          <input v-model="password" type="password" placeholder="Contraseña" class="input" required />
+
           <button @click="login" class="login-button">Ingresar</button>
+
           <p v-if="error" class="error-message">{{ error }}</p>
       </div>
     </div>
-
     </div>
   </div>
 </template>
@@ -23,7 +22,7 @@
   import { ref } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
-import { loadEnvFile } from 'process';
+  import { loadEnvFile } from 'process';
 
   const loading = ref(false);
   const error = ref(null);
@@ -33,8 +32,17 @@ import { loadEnvFile } from 'process';
 
   async function login() {
     console.log("antes de entrar a la funcion")
+
     error.value = null;
     loading.value = true;
+
+    if (username === "" || password === ""){
+      console.log("Cueck")
+      let alerta = alert("Debe ingresar sus credenciales!") 
+      loading.value = false;
+      return; 
+    }
+
     try {
       // const response = await axios.post('http://127.0.0.1:8000/api/token/'
       // const path = `${import.meta.env.VITE_API_URL}api/token/`;
@@ -42,13 +50,11 @@ import { loadEnvFile } from 'process';
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
       const path = `${baseUrl}/api/token/`;
 
-      console.log("URL de la API:", path)
-
       const response = await axios.post(path, {
         username: username.value,
-        password: password.value,
-      }, {
-        //headers
+        password: password.value
+      },
+      {
         headers: {
           "Content-Type": 'application/json',
           "Accept":'application/json',
@@ -59,6 +65,7 @@ import { loadEnvFile } from 'process';
       console.log("si vemos esto, la api responde bien")
 
       localStorage.setItem('accessToken', response.data.access);
+      // Cuando se obtenga un 200 como respuesta se reocaliza al la vista dependiendo de su nivel de usuario
       router.push('/portal');
 
      } catch (err) {

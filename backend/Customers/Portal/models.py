@@ -22,7 +22,6 @@ class Cliente(models.Model):
 #Esta clase permitirá crear categorias de documentos desde el panel de administración de Django
 class TipoDocumento(models.Model):
     nombre = models.CharField(max_length=150, unique=True)
-    codigo = models.CharField(max_length=150, unique=True)
     
     def __str__(self):
         return self.nombre
@@ -31,13 +30,6 @@ class TipoDocumento(models.Model):
 class CategoriaDocumento(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="Documentos")
     tipo_documento = models.ForeignKey(TipoDocumento, on_delete=models.PROTECT)
-    
-    # #El campo upload_to --> organiza los archivos en carpetas por año y mes automáticamente.
-    # # Campo donde la empresa sube el archivo
-    # archivo_consultora = models.FileField(upload_to='documentos/consultora/%Y/%m/', null=True, blank=True)
-    # # Campo para el archivo que el cliente sube para la consultora
-    # archivo_cliente = models.FileField(upload_to='documentos/cliente/%Y/%m/', null=True, blank=True)    
-    # fecha_actualizacion = models.DateTimeField(auto_now=True)
     
     class Meta:
         unique_together = ("cliente", "tipo_documento")

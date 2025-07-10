@@ -14,42 +14,42 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+  import { ref, onMounted } from 'vue';
+  import axios from 'axios';
+  import { useRouter } from 'vue-router';
 
-// Importa los componentes de dashboard
-import DashboardAdmin from '@/components/DashboardAdmin.vue';
-import DashboardCliente from '@/components/DashboardCliente.vue';
+  // Importa los componentes de dashboard
+  import DashboardAdmin from '@/components/DashboardAdmin.vue';
+  import DashboardCliente from '@/components/DashboardCliente.vue';
 
-const profile = ref({});
-const loading = ref(true);
-const router = useRouter();
+  const profile = ref({});
+  const loading = ref(true);
+  const router = useRouter();
 
-onMounted(async () => {
-  // --- INICIO DEL CAMBIO ---
-  // Creamos la instancia de Axios DENTRO del onMounted.
-  // Esto asegura que se lee el token MÁS RECIENTE desde localStorage,
-  // justo después de que el usuario ha iniciado sesión.
-  const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+  onMounted(async () => {
+    // --- INICIO DEL CAMBIO ---
+    // Creamos la instancia de Axios DENTRO del onMounted.
+    // Esto asegura que se lee el token MÁS RECIENTE desde localStorage,
+    // justo después de que el usuario ha iniciado sesión.
+    const apiClient = axios.create({
+      baseURL: 'http://127.0.0.1:8000/api',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    });
+    // --- FIN DEL CAMBIO ---
+
+    try {
+      // Llama al endpoint /me/ para obtener los datos del perfil
+      const response = await apiClient.get('/me/');
+      profile.value = response.data; // Guarda los datos del perfil
+    } catch (error) {
+      console.error("No se pudo obtener el perfil del usuario. Redirigiendo al login.", error);
+      router.push('/'); // Si hay un error (ej: token inválido), vuelve al login
+    } finally {
+      loading.value = false;
     }
   });
-  // --- FIN DEL CAMBIO ---
-
-  try {
-    // Llama al endpoint /me/ para obtener los datos del perfil
-    const response = await apiClient.get('/me/');
-    profile.value = response.data; // Guarda los datos del perfil
-  } catch (error) {
-    console.error("No se pudo obtener el perfil del usuario. Redirigiendo al login.", error);
-    router.push('/'); // Si hay un error (ej: token inválido), vuelve al login
-  } finally {
-    loading.value = false;
-  }
-});
 </script>
 
 <style scoped>

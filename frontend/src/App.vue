@@ -7,7 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <header>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" -->
     
-    <img alt="Vue logo" class="logo" src="@/assets/image.png" width="325" height="325" />
+    <img alt="Vue logo" class="logo" src="@/assets/image.png" width="325" height="325" /> <!--Imagen de la empresa-->
 
     <div class="wrapper">
       <HelloWorld msg="Ara y Bustamante Consultores" />
@@ -15,6 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'
       <nav>
         <RouterLink to="/" class="Home">Home</RouterLink>
       </nav>
+
     </div>
   </header>
 
@@ -28,9 +29,9 @@ html{
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #f4f7fb; /* o tu color base */
+  background-color: #f4f7fb;
   font-family: 'Segoe UI', sans-serif;
-   line-height: 1.5;
+  line-height: 1.5;
   padding: 40px; 
   min-height: 100vh;
   width: 42vw;
@@ -129,4 +130,5 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+
 </style>

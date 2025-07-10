@@ -6,14 +6,19 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import * 
 
-# Create your views here.
-
 class ProfileView(views.APIView):
-    permission_classes = [IsAuthenticated]
+    """
+    Solo los usuarios que se han logeado podran acceder a cualquiera de las viewSet(listar, crear, actualizar)
+    
+    Los usuarios que no se autentiquen, recibiran una respuesta '401'
+    """
+    permission_classes = [IsAuthenticated] 
 
     def get(self, request, *args, **kwargs):
+        
         if hasattr(request.user, 'administrador'):
-            profile = request.user.administrador
+            profile = request.user.administrador    
+            #Diccionario con datos de los empleados
             data = {
                 'username': request.user.username,
                 'full_name':request.user.get_full_name(),
@@ -21,6 +26,7 @@ class ProfileView(views.APIView):
                 'role_detail': profile.rol,
             }
             return Response(data)
+        
         elif hasattr(request.user, 'cliente'):
             profile = request.user.cliente
             data = {
@@ -33,19 +39,14 @@ class ProfileView(views.APIView):
         return Response({'Error': 'Perfil no encontrado'}, status=404)
 
 
-class CategoriaDocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta heredando de viewsets.ModelViewSet
+class CategoriaDocumentoViewSet(viewsets.ModelViewSet): 
     #API endpoint que te permite ver y editar los documentos
     serializer_class = CategoriaDocumentoSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """
-        Este método filtra todos los documentos para devolver exclusivamente los documentos del cliente
-        que los esta solicitando
-        """
         user = self.request.user
         
-        #Si el usuario es administrador
         if hasattr(user, 'administrador'):
             return CategoriaDocumento.objects.all().order_by('cliente__razon_social', 'tipo_documento__nombre')
         
@@ -55,7 +56,7 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta her
         #Si no es ninguno no devuelve nada
         return CategoriaDocumento.objects.none()
     
-           # --- NUEVO: Endpoint para subir archivos a una categoría ---
+    #Endpoint para subir archivos a una categoría
     @action(detail=True, methods=['post'], url_path='upload-file')
     def upload_file(self, request, pk=None):
         categoria = self.get_object()
@@ -86,9 +87,7 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet): #--> Esta clase esta her
         serializers = self.get_serializer(documento)
         return Response(serializers.data)
     
-    # --- NUEVO: Vista para borrar un archivo específico ---
+    
 class ArchivoSubidoDeleteView(generics.DestroyAPIView):
         queryset = ArchivoSubido.objects.all()
         permission_classes = [IsAuthenticated]
-        # Aquí podrías añadir lógica de permisos extra para asegurar que solo
-        # el admin o el dueño del cliente puedan borrar.

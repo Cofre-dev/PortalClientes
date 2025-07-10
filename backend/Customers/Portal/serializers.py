@@ -9,7 +9,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 class TipoDocumentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoDocumento
-        fields = ['nombre', 'codigo']
+        fields = ['nombre']
         
 
 class ArchivoSubidoSerializer(serializers.ModelSerializer):
@@ -22,7 +22,8 @@ class ArchivoSubidoSerializer(serializers.ModelSerializer):
 class CategoriaDocumentoSerializer(serializers.ModelSerializer):
         tipo_documento = TipoDocumentoSerializer(read_only=True)
         cliente = ClienteSerializer(read_only=True)
-        # Esta es la magia: incluye una lista de archivos en cada categoría
+        
+        # Incluye una lista de archivos en cada categoría
         archivos = ArchivoSubidoSerializer(many=True, read_only=True)
 
         class Meta:
