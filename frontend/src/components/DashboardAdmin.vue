@@ -23,7 +23,7 @@
 
     <p class="subtitle">Revise y gestione los documentos de todos los clientes.</p>
 
-    <!-- Indicador de Carga Principal -->
+    <!-- Indicador de Carga Principal, solo carga si estuviesen cargando los archivos -->
     <div v-if="loading" class="loading-spinner">
       <i class="fas fa-spinner fa-spin"></i> Cargando documentos...
     </div>

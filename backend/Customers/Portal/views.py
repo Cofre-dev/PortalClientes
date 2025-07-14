@@ -7,11 +7,6 @@ from .models import *
 from .serializers import * 
 
 class ProfileView(views.APIView):
-    """
-    Solo los usuarios que se han logeado podran acceder a cualquiera de las viewSet(listar, crear, actualizar)
-    
-    Los usuarios que no se autentiquen, recibiran una respuesta '401'
-    """
     permission_classes = [IsAuthenticated] 
 
     def get(self, request, *args, **kwargs):
@@ -56,7 +51,6 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet):
         #Si no es ninguno no devuelve nada
         return CategoriaDocumento.objects.none()
     
-    #Endpoint para subir archivos a una categoría
     @action(detail=True, methods=['post'], url_path='upload-file')
     def upload_file(self, request, pk=None):
         categoria = self.get_object()

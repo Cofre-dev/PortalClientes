@@ -4,7 +4,6 @@ import os
 import secrets as sctr
 from django.contrib.auth.models import User
 
-
 class Administrador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rol = models.CharField(max_length=50, help_text="Contador, TI, Tributaria")
@@ -20,6 +19,7 @@ class Cliente(models.Model):
         
     def __str__(self):
         return self.razon_social
+    
 
 #Esta clase permitirá crear categorias de documentos desde el panel de administración de Django
 class TipoDocumento(models.Model):

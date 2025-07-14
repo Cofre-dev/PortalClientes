@@ -22,7 +22,7 @@
   import { ref } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
-  import { loadEnvFile } from 'process';
+  // import { loadEnvFile } from 'process';
 
   const loading = ref(false);
   const error = ref(null);
@@ -44,11 +44,11 @@
     }
 
     try {
-      // const response = await axios.post('http://127.0.0.1:8000/api/token/'
+      const path = await axios.post('http://127.0.0.1:8000/api/token/')
       // const path = `${import.meta.env.VITE_API_URL}api/token/`;
 
-      const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
-      const path = `${baseUrl}/api/token/`;
+      // const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+      // const path = `${baseUrl}/api/token/`;
 
       const response = await axios.post(path, {
         username: username.value,
