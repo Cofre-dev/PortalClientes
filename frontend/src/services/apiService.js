@@ -1,16 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://127.0.0.1:8000';
+// const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://127.0.0.1:8000';
+const API_BASE_URL = 'https://127.0.0.1:8000';
 
 // 1. Creamos una instancia de Axios con la configuración base.
 const apiClient = axios.create({
-  // baseURL: 'http://127.0.0.1:8000/api', // Apunta a la raíz de tu API
+  // Apunta a la raíz de tu API
+  baseURL: 'http://127.0.0.1:8000/api', 
   // baseURL: 'https://portalclientes.onrender.com'
-  baseURL: `${API_BASE_URL}/api`,
+  // baseURL: `${API_BASE_URL}/api`,
 });
 
 // 2. Usamos un "interceptor" para añadir el token de autenticación a CADA petición.
-// Esto es mucho más limpio que añadirlo manualmente en cada llamada.
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');

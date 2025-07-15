@@ -35,7 +35,7 @@ class ProfileView(views.APIView):
 
 
 class CategoriaDocumentoViewSet(viewsets.ModelViewSet): 
-    #API endpoint que te permite ver y editar los documentos
+    #API endpoint que permite ver y editar los documentos
     serializer_class = CategoriaDocumentoSerializer
     permission_classes = [IsAuthenticated]
     
@@ -48,9 +48,9 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet):
         elif hasattr(user, 'cliente'):
             return CategoriaDocumento.objects.filter(cliente=user.cliente)
         
-        #Si no es ninguno no devuelve nada
         return CategoriaDocumento.objects.none()
     
+    #EndPoint para subir archivos
     @action(detail=True, methods=['post'], url_path='upload-file')
     def upload_file(self, request, pk=None):
         categoria = self.get_object()

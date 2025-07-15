@@ -23,6 +23,7 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style scoped>
+
 html{
   overflow-x: auto;
   margin: 0;
@@ -67,7 +68,7 @@ header {
   max-width: 500px;
   margin-bottom: 20px;
   transition: transform 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 

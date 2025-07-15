@@ -31,26 +31,26 @@
   const router = useRouter();
 
   async function login() {
-    console.log("antes de entrar a la funcion")
+    console.log("1.-")
 
     error.value = null;
     loading.value = true;
 
-    if (username === "" || password === ""){
-      console.log("Cueck")
-      let alerta = alert("Debe ingresar sus credenciales!") 
-      loading.value = false;
-      return; 
+    if (username.value === "" || password.value === ""){
+      error.value = "Credenciales vacías";
+      alert("Debe ingresar sus credenciales")
+      loading.value = false
+      return; //These step stoped the execition if credentials are empty
     }
 
     try {
-      const path = await axios.post('http://127.0.0.1:8000/api/token/')
-      // const path = `${import.meta.env.VITE_API_URL}api/token/`;
-
-      // const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+      console.log("2.-");
+      const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+      const tokenPath = `${baseUrl}/api/token/`
       // const path = `${baseUrl}/api/token/`;
+      console.log("3.-", tokenPath);
 
-      const response = await axios.post(path, {
+      const response = await axios.post(tokenPath, {
         username: username.value,
         password: password.value
       },
@@ -62,18 +62,37 @@
         withCredentials: true,
       });
 
-      console.log("si vemos esto, la api responde bien")
+      console.log("4.- si vemos esto, la api responde bien 200")
 
       localStorage.setItem('accessToken', response.data.access);
-      // Cuando se obtenga un 200 como respuesta se reocaliza al la vista dependiendo de su nivel de usuario
+      // Cuando se obtenga un 200 como respuesta se reocaliza a la vista dependiendo de su nivel de usuario
       router.push('/portal');
 
+      // Implementando nueva logica
      } catch (err) {
-      error.value = 'Usuario o contraseña incorrectos.';
-      console.error('Error de autenticación:', err);
-
-    } finally {
-        console.log("Fin de la funcion")
+      // Robust error handling for Axios errors
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response.status === 400 || err.response.status === 401) {
+            error.value = "Usuario o contraseña incorrectos.";
+            console.error("Error de autenticación (credenciales/solicitud):", err.response.data);
+          } else {
+            error.value = `Error del servidor: ${err.response.status}. Intente de nuevo.`;
+            console.error("Error del servidor inesperado:", err.response.data);
+          }
+        } else if (err.request) {
+          error.value = `No se pudo conectar al servidor. Verifique su conexión o la configuración CORS.`. err.message;
+          console.error("Error de red/conexión (Axios err.request):", err.message);
+        } else {
+          error.value = 'Error al configurar la solicitud. Intente de nuevo.';
+          console.error("Error de Axios (configuración):", err.message);
+        }
+      } else {
+        error.value = 'Ocurrió un error inesperado.';
+        console.error("Error inesperado (no-Axios):", err);
+      }
+     } finally {
+        console.log("Fin de la función login");
         loading.value = false;
     }
   }

@@ -29,7 +29,8 @@ SECRET_KEY = 'django-insecure-l4+xdt$#i1yf2eozm(1#2#mdipk+5+k0l*%dbc9rk(w7qnq^b+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+# DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = True
 
 #Añade aquí la futura URL de tu frontend (Netlify) y tu backend (Render)
 ALLOWED_HOSTS = [
@@ -95,29 +96,29 @@ WSGI_APPLICATION = 'Customers.wsgi.application'
 # default Database 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 #Modificación del archivo para que seleccione la base de dato que este definida
-DATABASE_URL = os.environ.get('DATABASE_URL')   
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-            conn_max_age=600
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# DATABASE_URL = os.environ.get('DATABASE_URL')   
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.config(
+#             default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+#             conn_max_age=600
+#         )
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
 
 # Password validation
@@ -226,7 +227,7 @@ CORS_EXPOSE_HEADERS = [
 # Agregar URL del frontend desde variable de entorno
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
 if FRONTEND_URL:
-    if not DEBUG:  # Solo en producción
+    if not DEBUG:  
         if FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
             CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
     if FRONTEND_URL not in CORS_TRUSTED_ORIGINS:

@@ -90,11 +90,11 @@
 
                     <div class="file-actions">
 
-                      <button @click="downloadFile(archivo.archivo)"                  class="action-button download small">
+                      <button @click="downloadFile(archivo.archivo)" class="action-button download small">
                         <i class="fas fa-download"></i> Descargar
                       </button>
 
-                      <button @click="confirmDelete(archivo.id)" class="action-button  delete small">
+                      <button @click="confirmDelete(archivo.id)" class="action-button delete small">
                         <i class="fas fa-trash-alt"></i> Borrar
                       </button>
 
