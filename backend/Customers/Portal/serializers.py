@@ -13,6 +13,7 @@ class TipoDocumentoSerializer(serializers.ModelSerializer):
         fields = ['nombre']
         
 
+#Modificación de la clase serializer por modificación en models.py
 class ArchivoSubidoSerializer(serializers.ModelSerializer):
     archivo = serializers.FileField(use_url=True)
     class Meta:
