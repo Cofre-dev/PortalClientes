@@ -45,6 +45,12 @@ class ArchivoSubido(models.Model):
     archivo = models.FileField(upload_to="documentos/%Y/%m")
     subido_por = models.CharField(max_length=20, choices=[('cliente','Cliente'),('consultora','Consultora')])
     fecha_subida = models.DateTimeField(auto_now_add=True)
+    correlativo = models.PositiveIntegerField()
+    
+    class Meta:
+        unique_together = ('categoria', 'correlativo')
+        ordering = ['correlativo']
     
     def __str__(self):
-        return os.path.basename(self.archivo.name)
+        #return os.path.basename(self.archivo.name)
+        return f"#{self.correlativo} - {os.path.basename(self.archivo.name)}"

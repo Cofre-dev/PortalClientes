@@ -2,27 +2,20 @@
   <div class="dashboard-container">
 
     <div class="header">
-      <h1>Panel de Administrador</h1>
+      <h1 class="titulo">Panel de Administrador</h1>
 
       <div class="profile-info">
-        <span>
-          <p>Usuario:   <span>
-            {{ profile.full_name || profile.username }}
-            (<strong>
-              {{ profile.role_detail }}
-            </strong>)
-          </span> </p>
+        <span>Usuario: <strong>{{ profile.full_name || profile.username }}</strong>
+        (<strong>{{ profile.role_detail }}</strong>)
         </span>
-
         <button @click="logout" class="logout-button">
           <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
         </button>
       </div>
-
     </div>
 
-    <p class="subtitle">Revise y gestione los documentos de todos los clientes.</p>
-
+   <p class="subtitle">Revise y gestione los documentos de todos los clientes.</p>
+    
     <!-- Indicador de Carga Principal, solo carga si estuviesen cargando los archivos -->
     <div v-if="loading" class="loading-spinner">
       <i class="fas fa-spinner fa-spin"></i> Cargando documentos...
@@ -72,6 +65,7 @@
           <!-- Fila desplegable con la lista de archivos -->
           <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
             <td colspan="5">
+
               <div class="files-list">
                 <!--Si no hay archivos se mostrará este fragmento de código-->
                 <div v-if="categoria.archivos.length === 0" class="no-files">
@@ -81,7 +75,6 @@
                 <!--Cuando se despliegue la lista, se mostrará este código que renderiza los archivos a mostrar-->
                 <ul>
                   <li v-for="archivo in categoria.archivos" :key="archivo.id">
-
                     <span class="file-info">
                       <i class="fas fa-file-alt"></i>
                         {{ archivo.archivo.split('/').pop() }}
@@ -141,7 +134,7 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 // NOTA: Para que los íconos (fas fa-...) funcionen,
-// asegúrate de haber añadido el link de Font Awesome en tu archivo principal `index.html`
+// asegúrate de haber añadido el link de "Font Awesome" en tu archivo principal `index.html`
 // <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 const props = defineProps({
@@ -246,8 +239,18 @@ function logout() {
 onMounted(fetchCategorias);
 </script>
 
-<style scoped>
+<style scoped src="./style.css"></style>
+
+<!-- <style scoped>
 /* Usando variables CSS para un tema consistente y fácil de cambiar */
+
+.titulo {
+  margin-left: 1.2rem;
+}
+.usuario{
+  margin-right: 2.5rem;
+}
+
 :root {
   --primary-color: #038eff;
   --danger-color: #dc3545;
@@ -289,6 +292,7 @@ h1 {
 }
 
 .profile-info {
+  margin-left: 1.4rem;
   font-size: 1.4rem;
   display: flex; 
   align-items: center;
@@ -298,20 +302,24 @@ h1 {
 
 .subtitle { 
   font-weight: bold;
+  margin-right: 30%;
+  margin-left:20px ;
   color: #0a0a0a;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   font-size: 1.3em;
 }
 
 .logout-button {
+  /* margin-right: 4%; */
+  /* margin-top: -150px; */
   font-weight: bold;
-   background-color: transparent;
-   border: 1px solid #E53935;
-   color: white;
-   padding: 10px 20px;
-   border-radius: 5px;
-   cursor: no-drop;
-   transition: all 0.1s;
+  background-color: transparent;
+  border: 1px solid #E53935;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: no-drop;
+  transition: all 0.1s;
 }
 
 .logout-button:hover {
@@ -551,4 +559,4 @@ tbody tr:last-child td {
   cursor: not-allowed;
 }
 
-</style>
+</style> -->

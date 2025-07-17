@@ -1,21 +1,16 @@
 <template>
-  <div class="dashboard-container">
+ <div class="dashboard-container">
 
     <div class="header">
-      <h1>Portal para Clientes</h1>
-
-      <button @click="logout" class="logout-button">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
-      
-      <br>
-
+      <h1 class="titulo">Portal de Clientes</h1>
       <div class="profile-info">
-        <br>
-        <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
-        <br>
-      </div>
 
+        <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
+        <button @click="logout" class="logout-button">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+
+      </div>
     </div>
 
     <p class="subtitle">Revise y gestione sus documentos.</p>
@@ -35,8 +30,15 @@
             <th class="text-center">Acción Rápida</th>
           </tr>
         </thead>
+        <tbody>
 
-        <template v-for="categoria in categorias" :key="categoria.id">
+          <tr v-if="categorias.length === 0">
+            <td colspan="4" class="no-categories-message">
+              No hay categorías de documentos asignadas, Comuniquese con Ara y Bustamante
+            </td>
+          </tr>
+
+          <template v-for="categoria in categorias" :key="categoria.id">
           <!-- Fila principal de la categoría -->
           <tr class="category-row" @click="toggleCategory(categoria.id)">
 
@@ -83,21 +85,23 @@
                     </span>
                     
                     <div  class="file-actions">
-                      <button @click="triggerDownload(archivo.archivo)" class="action-button download small">
+                       <button @click="triggerDownload(archivo.archivo)" class="action-button download small">
                         <i class="fas fa-download"></i> Descargar
                       </button>
 
-                      <button v-if="archivo.subido_por === 'cliente' " @click="confirmDelete(archivo.id)" class="action-button delete small">
+                      <button v-if="archivo.subido_por === 'cliente'" @click="confirmDelete(archivo.id)" class="action-button delete small">
                         <i class="fas fa-trash-alt"></i> Borrar
                       </button>
                     </div>
-
                   </li>
                 </ul>
               </div>
             </td>
           </tr>
         </template>
+        </tbody>
+
+        
       </table>
     </div>
 
@@ -166,12 +170,14 @@ async function triggerDownload(fileUrl) {
     const response = await axios.get(fileUrl, { responseType: 'blob' });
     const url = window.URL.createObjectURL(response.data);
     const link = document.createElement('a');
+
     link.href = url;
-    link.setAttribute('download', fileUrl.split('/').pop() || 'download');
+    link.setAttribute('download', fileUrl.split('/').pop() || 'download'); 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+    
   } catch (error) {
     console.error('Error al descargar el archivo:', error);
     alert('No se pudo descargar el archivo.');
@@ -195,9 +201,12 @@ async function handleUpload(event, categoriaId) {
   if (!file) return;
   const formData = new FormData();
   formData.append('file', file);
+
   try {
     await apiClient.post(`/categorias/${categoriaId}/upload-file/`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: {
+         'Content-Type': 'multipart/form-data'
+      }
     });
     await fetchCategorias();
     openCategories.value.add(categoriaId);
@@ -234,7 +243,14 @@ function logout() {
 onMounted(fetchCategorias);
 </script>
 
-<style scoped>
+<style scoped src="./style.css"></style>
+
+<!-- <style scoped>
+
+.titulo{
+  margin-left: 20px;
+}
+
 /* CSS Limpio y con el formato solicitado */
 :root {
   --primary-color: #0d6efd;
@@ -284,7 +300,9 @@ h1 {
   gap: 20px;
   color: white;
 }
+
 .subtitle {
+  margin-left: 20px;
   font-weight: bold;
   color: #0a0a0a;
   margin-bottom: 30px;
@@ -587,4 +605,4 @@ tbody tr:last-child td {
   cursor: not-allowed;
 }
 
-</style>
+</style> -->

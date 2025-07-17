@@ -46,7 +46,7 @@
     try {
       console.log("2.-");
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
-      const tokenPath = `${baseUrl}/api/token/`
+      const tokenPath = `${baseUrl}/api/token/` 
       // const path = `${baseUrl}/api/token/`;
       console.log("3.-", tokenPath);
 
@@ -72,26 +72,35 @@
      } catch (err) {
       // Robust error handling for Axios errors
       if (axios.isAxiosError(err)) {
+        
         if (err.response) {
           if (err.response.status === 400 || err.response.status === 401) {
             error.value = "Usuario o contraseña incorrectos.";
             console.error("Error de autenticación (credenciales/solicitud):", err.response.data);
-          } else {
+          }
+          else {
             error.value = `Error del servidor: ${err.response.status}. Intente de nuevo.`;
             console.error("Error del servidor inesperado:", err.response.data);
           }
-        } else if (err.request) {
+        }
+
+        else if (err.request) {
           error.value = `No se pudo conectar al servidor. Verifique su conexión o la configuración CORS.`. err.message;
           console.error("Error de red/conexión (Axios err.request):", err.message);
-        } else {
+        }
+
+        else {
           error.value = 'Error al configurar la solicitud. Intente de nuevo.';
           console.error("Error de Axios (configuración):", err.message);
         }
-      } else {
+
+      }
+      else {
         error.value = 'Ocurrió un error inesperado.';
         console.error("Error inesperado (no-Axios):", err);
       }
-     } finally {
+
+     }finally {
         console.log("Fin de la función login");
         loading.value = false;
     }

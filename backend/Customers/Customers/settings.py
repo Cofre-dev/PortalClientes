@@ -81,7 +81,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.django',
+                'django.template.context_processors.debug', # Es buena práctica tenerlo
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -91,7 +91,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Customers.wsgi.application'
-
 
 # default Database 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

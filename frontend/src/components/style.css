@@ -1,0 +1,317 @@
+/* Usando variables CSS para un tema consistente y fácil de cambiar */
+
+.titulo {
+  margin-left: 1.2rem;
+  margin-top: -45px;
+}
+
+.usuario{
+  margin-right: 5.5rem;
+  margin-top: -45px;
+}
+
+:root {
+  --primary-color: #038eff;
+  --danger-color: #dc3545;
+  --dark-grey: #5A6A7A;
+  --light-grey: #F5F7FA;
+  --text-color: #333;
+  --border-color: #EAEFF5;
+}
+.dashboard-container {
+  padding: 50px; 
+  justify-content: center;   
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  width: 850px;
+  background: linear-gradient(to right, #2bd17b, rgb(6, 22, 94));
+  box-sizing: border-box;
+  margin-left: 580px;
+}
+
+.header {
+  margin-top: 20px;
+  height: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+}
+
+.login-wrapper{
+  width: 300x;
+}
+
+h1 { 
+  color: #FFFFFF;
+  font-weight: 300;
+  margin: 0;
+}
+
+.profile-info {
+  margin-top: -45px;
+  margin-left: -0.5rem;
+  font-size: 1.4rem;
+  display: flex; 
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+.subtitle { 
+  font-weight: bold;
+  margin-top: 40px;
+  margin-right: 30%;
+  margin-left:20px ;
+  color: #0a0a0a;
+  margin-bottom: 35px;
+  font-size: 1.3em;
+}
+
+.logout-button {
+  font-weight: bold;
+  background-color: transparent;
+  border: 1px solid #E53935;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #E53935; 
+  color: white;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.5em;
+  color: white;
+}
+.loading-spinner .fa-spinner {
+  margin-right: 10px;   
+}
+
+.documents-table-container { 
+  overflow-x: auto;
+  background-color: #152748;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Corregido */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Encabezados de la tabla principal */
+thead th { 
+  background-color: var(--light-grey);
+  color: var(--dark-grey);
+  padding: 15px 20px; 
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.category-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.category-row:hover {
+  background-color: #1637dc;
+}
+
+tbody td {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.chevron-icon {
+  transition: transform 0.3s;
+}
+
+.file-count-badge {
+  background-color: var(--dark-grey);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+}
+
+/*Filas de la tabla cuando se despliega */
+.files-row td { 
+  background-color: #172978;
+  padding: 0;
+}
+
+.files-list {
+  padding: 15px 30px;
+}
+
+.files-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.files-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.files-list li:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-info small { 
+  color: #888;
+}
+
+.no-files {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  border: none;
+  font-family: inherit;
+  font-size: 0.9em;
+}
+
+.action-button.download {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.action-button.download:hover { 
+  background-color: #0056b3;
+}
+
+.action-button.upload {
+  background-color: #0a1a5f;
+  color: white;
+}
+
+.action-button.upload:hover {
+  background-color: #1c44a9;
+}
+
+.action-button.delete {
+  background-color: var(--danger-color); 
+  color: white;
+}
+
+.action-button.delete:hover {
+  background-color: #c82333;
+}
+
+.file-input { 
+  display: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Estilos para el Modal de Confirmación */
+.modal-overlay { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content { 
+  background: rgb(5, 14, 77);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.modal-content h4 {
+  margin-top: 0;
+  color: var(--danger-color);
+}
+
+.modal-content p {
+  margin-bottom: 25px;
+  color: white; /* Corregido para mejor contraste */
+}
+
+.modal-actions { 
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.modal-actions button {
+  padding: 10px 25px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.button-secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+.button-danger { 
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.button-danger:disabled { /* Corregido para que aplique el hover también */
+  background-color: #c82333;
+  opacity: 0.7;
+  cursor: not-allowed;
+}

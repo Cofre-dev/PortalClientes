@@ -17,7 +17,7 @@ class ArchivoSubidoSerializer(serializers.ModelSerializer):
     archivo = serializers.FileField(use_url=True)
     class Meta:
         model = ArchivoSubido
-        fields = ['id','archivo','subido_por','fecha_subida']
+        fields = ['id','correlativo','archivo','subido_por','fecha_subida']
 
 
 class CategoriaDocumentoSerializer(serializers.ModelSerializer):
