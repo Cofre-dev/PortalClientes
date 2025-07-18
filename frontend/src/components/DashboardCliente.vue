@@ -2,13 +2,11 @@
   <div class="dashboard-container">
 
     <div class="header">
-      <h1>Portal para Clientes</h1>
+      <h1 class="titulo">Portal para Clientes</h1>
 
       <button @click="logout" class="logout-button">
         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
       </button>
-      
-      <br>
 
       <div class="profile-info">
         <br>
@@ -29,7 +27,7 @@
         <thead>
           <tr>
             <th class="text-center" style="width: 5%;"></th>
-            <th class="text-center">Cliente</th>
+            <!-- <th class="text-center">Cliente</th> -->
             <th class="text-center">Tipo de Documento</th>
             <th class="text-center">Archivos</th>
             <th class="text-center">Acción Rápida</th>
@@ -251,6 +249,10 @@ onMounted(fetchCategorias);
   --table-dark-header-bg: #0c3d7a;
   --table-dark-text: #a0b3d1;
 }   
+
+.titulo, .subtitle{
+  margin-left: 20px;
+}
 
 .dashboard-container {
   padding: 50px; 

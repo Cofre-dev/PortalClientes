@@ -2,7 +2,7 @@
   <div class="dashboard-container">
 
     <div class="header">
-      <h1>Panel de Administrador</h1>
+      <h1 class="titulo">Panel de Administrador</h1>
 
       <div class="profile-info">
         <span>
@@ -255,6 +255,9 @@ onMounted(fetchCategorias);
   --light-grey: #F5F7FA;
   --text-color: #333;
   --border-color: #EAEFF5;
+}
+.titulo, .subtitle{
+  margin-left: 20px;
 }
 .dashboard-container {
    padding: 50px; 
