@@ -24,8 +24,8 @@
           <tr>
             <th class="text-center" style="width: 5%;"></th>
             <th class="text-center">Tipo de Documento</th>
-            <th class="text-center">Archivos</th>
-            <th class="text-center">Acción Rápida</th>
+            <th class="text-center">Cantidad de archivos</th>
+            <th class="text-center">Subir Archivos</th>
           </tr>
         </thead>
 
@@ -37,18 +37,17 @@
               <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </td>
 
-            <!-- <td class="text-center">
-              {{ categoria.cliente.razon_social }}
-            </td> -->
-            
+          <!-- La categoría de documentos -->          
             <td class="text-center">
               {{ categoria.tipo_documento.nombre }}
             </td>
 
+            <!--La cantidad de archivos-->
             <td class="text-center">
               <span class="file-count-badge">{{ categoria.archivos.length }}</span>
             </td>
 
+            <!--Boton para subir archivos-->
             <td class="text-center">
               <label class="action-button upload small">
                 <i class="fas fa-upload"></i> Subir
@@ -96,10 +95,6 @@
       </table>
     </div>
 
-    <button @click="logout" class="logout-button">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-    </button>
-
     <!-- Modal de confirmación para borrar -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
       <div class="modal-content">
@@ -120,6 +115,33 @@
         </div>
       </div>
     </div>
+
+    <button @click="isLogout = true" class="logout-button">
+      <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </button>
+
+    <!-- Modal de confirmación para borrar -->
+    <transition name="modal-fade">
+      <div v-if="isLogout" class="modal-overlay" @click.self="isLogout = false">
+
+        <div class="modal-content logout-modal">
+          <div class="modal-icon">
+            <i class="fas fa-sign-out-alt fa-3x"></i>
+          </div>
+          <h4>¿Cerrar sesión?</h4>
+          <p>¿Está seguro de que desea salir de su cuenta?<br>Sus cambios estarán guardados.</p>
+          <div class="modal-actions">
+            <button @click="isLogout = false" class="button-secondary">
+              Cancelar
+            </button>
+            <button @click="confirmLogout" class="button-danger">
+              <i class="fas fa-check"></i> Sí, cerrar sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
+
   </div>
   
   </template>
@@ -142,6 +164,7 @@ const openCategories = ref(new Set());
 const showDeleteModal = ref(false);
 const fileToDeleteId = ref(null);
 const isDeleting = ref(false);
+const isLogout = ref(false)
 
 const apiClient = axios.create({
   // baseURL: 'http://127.0.0.1:8000/api',
@@ -226,10 +249,17 @@ async function executeDelete() {
   }
 }
 
-function logout() {
+function confirmLogout() {
   localStorage.removeItem('accessToken');
   router.push('/');
+  isLogout.value = false;
 }
+
+// Function comentada porque no se usa
+// function logout() { 
+//     localStorage.removeItem('accessToken');
+//     router.push('/');
+// }
 
 onMounted(fetchCategorias);
 </script>
@@ -252,12 +282,41 @@ onMounted(fetchCategorias);
   --table-dark-text: #a0b3d1;
 }   
 
-
+.logout-modal {
+  background: linear-gradient(135deg, #0d6efd 0%, #051f46 100%);
+  border: 2px solid #0d6efd;
+  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.2);
+  color: #fff;
+  position: relative;
+  animation: modalPop 0.3s;
+}
+@keyframes modalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.modal-icon {
+  margin-bottom: 15px;
+}
+.logout-modal h4 {
+  color: #fff;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+.logout-modal p {
+  color: #e0e0e0;
+  font-size: 1.1em;
+  margin-bottom: 25px;
+}
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s;
+}
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
+}
 
 .titulo, .subtitle{
   margin-left: 25px;
 }
-
 
 .dashboard-container {
   padding: 50px; 
@@ -589,10 +648,20 @@ tbody tr:last-child td {
   background-color: #ccc;
   color: #333;
 }
+
+.button-secondary:hover {
+  color:#06165e69 ;
+}
+
 .button-danger {
   background-color: var(--danger-color);
   color: white;
 }
+
+.button-danger:hover {
+  color: red;
+}
+
 .button-danger:disabled {
   background-color: #c82333;
   opacity: 0.7;

@@ -107,9 +107,6 @@
     </div>
 
     <br>
-      <button @click="logout" class="logout-button">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
 
     <!-- Modal de confirmación para borrar (mejorado) -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
@@ -132,6 +129,40 @@
         </div>
       </div>
     </div>
+
+    <button @click="logout = true" class="logout-button">
+      <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </button>
+
+    <!-- Modal de confirmación para borrar -->
+    <transition name="modal-fade">
+      <div v-if="isLogout" class="modal-overlay" @click.self="isLogout = false">
+
+        <div class="modal-content logout-modal">
+
+          <div class="modal-icon">
+            <i class="fas fa-sign-out-alt fa-3x"></i>
+          </div>
+
+          <h4>¿Cerrar sesión?</h4>
+          <p>¿Está seguro de que desea salir de su cuenta?</p>
+
+          <div class="modal-actions">
+
+            <button @click="isLogout = false" class="button-secondary">
+              Cancelar
+            </button>
+
+            <button @click="confirmLogout" class="button-danger">
+              <i class="fas fa-check"></i> Sí, cerrar sesión
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -158,6 +189,7 @@ const openCategories = ref(new Set());
 const showDeleteModal = ref(false);
 const fileToDeleteId = ref(null);
 const isDeleting = ref(false); // Nuevo estado para el feedback de borrado
+const isLogout = ref(false)
 
 const apiClient = axios.create({
   baseURL: `${backendUrl}/api`,
@@ -238,9 +270,10 @@ async function deleteFile() {
   }
 }
 
-function logout() {
+function confirmLogout() {
   localStorage.removeItem('accessToken');
   router.push('/');
+  isLogout.value = false;
 }
 
 onMounted(fetchCategorias);
@@ -269,6 +302,38 @@ onMounted(fetchCategorias);
   box-sizing: border-box;
   /* height: 100px; */
   margin-left: 580px;
+}
+
+.logout-modal {
+  background: linear-gradient(135deg, #0d6efd 0%, #051f46 100%);
+  border: 2px solid #0d6efd;
+  box-shadow: 0 8px 32px rgba(13, 110, 253, 0.2);
+  color: #fff;
+  position: relative;
+  animation: modalPop 0.3s;
+}
+@keyframes modalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.modal-icon {
+  margin-bottom: 15px;
+}
+.logout-modal h4 {
+  color: #fff;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+.logout-modal p {
+  color: #e0e0e0;
+  font-size: 1.1em;
+  margin-bottom: 25px;
+}
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s;
+}
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
 }
 
 .header {
@@ -309,7 +374,7 @@ h1 {
 
 .logout-button {
   font-weight: bold;
-   background-color: transparent;
+   background-color: #100b70;
    border: 1px solid #0a0a0a;
    color: white;
    padding: 10px 20px;
