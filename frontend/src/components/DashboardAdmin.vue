@@ -13,10 +13,6 @@
             </strong>)
           </span> </p>
         </span>
-
-        <button @click="logout" class="logout-button">
-          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </button>
       </div>
 
     </div>
@@ -107,9 +103,13 @@
             </td>
           </tr>
         </template>
-
       </table>
     </div>
+
+    <br>
+      <button @click="logout" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
 
     <!-- Modal de confirmación para borrar (mejorado) -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
@@ -292,6 +292,7 @@ h1 {
 }
 
 .profile-info {
+  margin-right: 100px;
   font-size: 1.4rem;
   display: flex; 
   align-items: center;
@@ -309,12 +310,14 @@ h1 {
 .logout-button {
   font-weight: bold;
    background-color: transparent;
-   border: 1px solid #E53935;
+   border: 1px solid #0a0a0a;
    color: white;
    padding: 10px 20px;
    border-radius: 5px;
    cursor: no-drop;
    transition: all 0.1s;
+   margin-left: 15px;
+   margin-top: 25px;
 }
 
 .logout-button:hover {

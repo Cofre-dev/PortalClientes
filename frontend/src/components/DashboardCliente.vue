@@ -4,10 +4,6 @@
     <div class="header">
       <h1 class="titulo">Portal para Clientes</h1>
 
-      <button @click="logout" class="logout-button">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </button>
-
       <div class="profile-info">
         <br>
         <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
@@ -27,7 +23,6 @@
         <thead>
           <tr>
             <th class="text-center" style="width: 5%;"></th>
-            <!-- <th class="text-center">Cliente</th> -->
             <th class="text-center">Tipo de Documento</th>
             <th class="text-center">Archivos</th>
             <th class="text-center">Acción Rápida</th>
@@ -42,9 +37,9 @@
               <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </td>
 
-            <td class="text-center">
+            <!-- <td class="text-center">
               {{ categoria.cliente.razon_social }}
-            </td>
+            </td> -->
             
             <td class="text-center">
               {{ categoria.tipo_documento.nombre }}
@@ -66,6 +61,7 @@
           <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
             <td colspan="5">
               <div class="files-list">
+
                 <!--Si no hay archivos se mostrará este fragmento de código-->
                  <div v-if="categoria.archivos.length === 0" class="no-files">
                   <i class="fas fa-folder-open"></i> No hay archivos en esta categoría.
@@ -74,6 +70,7 @@
                 <!--Cuando se despliegue la lista, se mostrará este código que renderiza los archivos a mostrar-->
                 <ul>
                   <li v-for="archivo in categoria.archivos" :key="archivo.id">
+
                     <span class="file-info">
                       <i class="fas fa-file-alt"></i>
                         {{ archivo.archivo.split('/').pop() }}
@@ -98,6 +95,10 @@
         </template>
       </table>
     </div>
+
+    <button @click="logout" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </button>
 
     <!-- Modal de confirmación para borrar -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
@@ -176,18 +177,6 @@ async function triggerDownload(fileUrl) {
   }
 }
 
-async function fetchCategorias() {
-  loading.value = true;
-  try {
-    const response = await apiClient.get('/categorias/');
-    categorias.value = response.data;
-  } catch (error) {
-    console.error("Error al cargar categorías:", error);
-  } finally {
-    loading.value = false;
-  }
-}
-
 async function handleUpload(event, categoriaId) {
   const file = event.target.files?.[0];
   if (!file) return;
@@ -203,6 +192,19 @@ async function handleUpload(event, categoriaId) {
     alert('Error al subir el archivo.');
   }
 }
+
+async function fetchCategorias() {
+  loading.value = true;
+  try {
+    const response = await apiClient.get('/categorias/');
+    categorias.value = response.data;
+  } catch (error) {
+    console.error("Error al cargar categorías:", error);
+  } finally {
+    loading.value = false;
+  }
+}
+
 
 function confirmDelete(id) {
   fileToDeleteId.value = id;
@@ -250,9 +252,12 @@ onMounted(fetchCategorias);
   --table-dark-text: #a0b3d1;
 }   
 
+
+
 .titulo, .subtitle{
-  margin-left: 20px;
+  margin-left: 25px;
 }
+
 
 .dashboard-container {
   padding: 50px; 
@@ -279,9 +284,11 @@ h1 {
   font-weight: 300;
   margin: 0;
 }
+
 .profile-info {
-  font-size: 1.2rem;
-  display: flex;
+  margin-right: 100px;
+  font-size: 1.4rem;
+  display: flex; 
   align-items: center;
   gap: 20px;
   color: white;
@@ -292,15 +299,18 @@ h1 {
   margin-bottom: 30px;
   font-size: 1.1em;
 }
+
 .logout-button {
   font-weight: bold;
-  background-color: transparent;
-  border: 1px solid #ff0000;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor:no-drop ;
-  transition: all 0.1s;
+   background-color: transparent;
+   border: 1px solid #0a0a0a;
+   color: white;
+   padding: 10px 20px;
+   border-radius: 5px;
+   cursor: no-drop;
+   transition: all 0.1s;
+   margin-left: 15px;
+   margin-top: 25px;
 }
 .logout-button:hover {
   background-color: #E53935;
@@ -416,7 +426,7 @@ tbody tr:last-child td {
   color: #888
 }
 
-.file-action {
+.file-actions {
   display: flex;
   gap: 10px;
 }
