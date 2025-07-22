@@ -29,6 +29,7 @@
   const username = ref('');
   const password = ref('');
   const router = useRouter();
+  const message = ref('')
 
   async function login() {
     console.log("1.-")

@@ -24,7 +24,7 @@ class Cliente(models.Model):
 #Esta clase permitirá crear categorias de documentos desde el panel de administración de Django
 class TipoDocumento(models.Model):
     nombre = models.CharField(max_length=150, unique=True)
-    
+    codigo = models.CharField(max_length=10, unique=True)
     def __str__(self):
         return self.nombre
 
@@ -43,8 +43,14 @@ class CategoriaDocumento(models.Model):
 class ArchivoSubido(models.Model):
     categoria = models.ForeignKey(CategoriaDocumento,on_delete=models.CASCADE, related_name="archivos")
     archivo = models.FileField(upload_to="documentos/%Y/%m")
-    subido_por = models.CharField(max_length=20, choices=[('cliente','Cliente'),('consultora','Consultora')])
+    subido_por = models.CharField(max_length=20, choices=[('cliente','Cliente'),('Ara y Bustamante','Ara y Bustamante')])
     fecha_subida = models.DateTimeField(auto_now_add=True)
+    correlativo = models.PositiveIntegerField()
+    
+    class Meta:
+        unique_together = ('categoria', 'correlativo')
+        ordering = ['correlativo']
     
     def __str__(self):
-        return os.path.basename(self.archivo.name)
+        # return os.path.basename(self.archivo.name)
+        return f"#{self.correlativo} - {os.path.basename(self.archivo.name)}"

@@ -14,7 +14,6 @@
           </span> </p>
         </span>
       </div>
-
     </div>
 
     <p class="subtitle">Revise y gestione los documentos de todos los clientes.</p>
@@ -130,7 +129,7 @@
       </div>
     </div>
 
-    <button @click="logout = true" class="logout-button">
+    <button @click="isLogout = true" class="logout-button">
       <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
     </button>
 

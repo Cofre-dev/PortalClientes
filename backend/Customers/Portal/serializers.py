@@ -11,14 +11,13 @@ class TipoDocumentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoDocumento
         fields = ['nombre']
-        
 
-#Modificación de la clase serializer por modificación en models.py
+
 class ArchivoSubidoSerializer(serializers.ModelSerializer):
     archivo = serializers.FileField(use_url=True)
     class Meta:
         model = ArchivoSubido
-        fields = ['id','archivo','subido_por','fecha_subida']
+        fields = ['id','correlativo','archivo','subido_por','fecha_subida']   
 
 
 class CategoriaDocumentoSerializer(serializers.ModelSerializer):
@@ -29,4 +28,6 @@ class CategoriaDocumentoSerializer(serializers.ModelSerializer):
 
         class Meta:
             model = CategoriaDocumento
-            fields = ['id', 'cliente', 'tipo_documento', 'archivos']
+            fields = ['id', 'cliente', 'tipo_documento', 'archivos']           
+            
+         

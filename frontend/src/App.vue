@@ -11,11 +11,6 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="Ara y Bustamante Consultores" />
-
-      <nav>
-        <RouterLink to="/" class="Home">Home</RouterLink>
-      </nav>
-
     </div>
   </header>
 

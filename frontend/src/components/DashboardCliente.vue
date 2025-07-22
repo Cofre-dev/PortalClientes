@@ -6,10 +6,9 @@
 
       <div class="profile-info">
         <br>
-        <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
+          <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
         <br>
       </div>
-
     </div>
 
     <p class="subtitle">Revise y gestione sus documentos.</p>
@@ -361,7 +360,7 @@ h1 {
 
 .logout-button {
   font-weight: bold;
-   background-color: transparent;
+   background-color: #100b70;
    border: 1px solid #0a0a0a;
    color: white;
    padding: 10px 20px;
@@ -371,10 +370,12 @@ h1 {
    margin-left: 15px;
    margin-top: 25px;
 }
+
 .logout-button:hover {
-  background-color: #E53935;
-  color: white;
+   background-color: #E53935; 
+   color: white;
 }
+
 .loading-spinner {
   text-align: center;
   padding: 50px;

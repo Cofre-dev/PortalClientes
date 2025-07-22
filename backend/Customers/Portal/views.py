@@ -3,6 +3,7 @@ from rest_framework import viewsets, status, views, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Max
 from .models import *
 from .serializers import * 
 
@@ -55,15 +56,18 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet):
     def upload_file(self, request, pk=None):
         categoria = self.get_object()
         archivo = request.data.get('file')
-        subido_por = 'cliente' if hasattr(request.user, 'cliente') else 'consultora'
+        subido_por = 'cliente' if hasattr(request.user, 'cliente') else 'Ara y bustamante'
 
         if not archivo:
             return Response({'error': 'No se envió ningún archivo.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        next_correlativo = (categoria.archivos.aggregate(Max('correlativo'))['correlativo__max'] or 0) + 1
 
         ArchivoSubido.objects.create(
             categoria=categoria,
             archivo=archivo,
-            subido_por=subido_por
+            subido_por=subido_por,
+            correlarivo = next_correlativo
         )
         return Response({'status': 'archivo subido'}, status=status.HTTP_201_CREATED)
 
