@@ -1,112 +1,115 @@
 <template>
   <div class="dashboard-container">
 
+    <!-- 1. Encabezado Limpio y Estructurado -->
     <div class="header">
-      <h1 class="titulo">Portal para Clientes</h1>
-
+      <h1 class="titulo">Portal de Clientes</h1>
       <div class="profile-info">
-        <br>
-          <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
-        <br>
+        <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
+        <button @click="isLogout = true" class="logout-button">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
       </div>
     </div>
 
+    <!-- 2. Subtítulo -->
     <p class="subtitle">Revise y gestione sus documentos.</p>
 
+    <!-- 3. Indicador de Carga -->
     <div v-if="loading" class="loading-spinner">
       <i class="fas fa-spinner fa-spin"></i> Cargando...
     </div>
 
+    <!-- 4. Contenedor Principal de la Tabla -->
     <div v-else class="documents-table-container">
       <table>
         <thead>
           <tr>
-            <th class="text-center" style="width: 5%;"></th>
-            <th class="text-center">Tipo de Documento</th>
-            <th class="text-center">Cantidad de archivos</th>
-            <th class="text-center">Subir Archivos</th>
+            <th style="width: 5%;"></th>
+            <th>Tipo de Documento</th>
+            <th class="text-center">Archivos</th>
+            <th class="text-center">Acción Rápida</th>
           </tr>
         </thead>
-
-        <template v-for="categoria in categorias" :key="categoria.id">
-          <!-- Fila principal de la categoría -->
-          <tr class="category-row" @click="toggleCategory(categoria.id)">
-
-            <td class="text-center">
-              <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+        <tbody>
+          <!-- Mensaje si no hay categorías -->
+          <tr v-if="categorias.length === 0">
+            <td colspan="4" class="no-categories-message">
+              No hay categorías de documentos asignadas.
             </td>
-
-          <!-- La categoría de documentos -->          
-            <td class="text-center">
-              {{ categoria.tipo_documento.nombre }}
-            </td>
-
-            <!--La cantidad de archivos-->
-            <td class="text-center">
-              <span class="file-count-badge">{{ categoria.archivos.length }}</span>
-            </td>
-
-            <!--Boton para subir archivos-->
-            <td class="text-center">
-              <label class="action-button upload small">
-                <i class="fas fa-upload"></i> Subir
-                <input type="file" @change="handleUpload($event, categoria.id)" class="file-input">
-              </label>
-            </td>
-
           </tr>
-          <!-- Fila desplegable con la lista de archivos -->
-          <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
-            <td colspan="5">
-              <div class="files-list">
-
-                <!--Si no hay archivos se mostrará este fragmento de código-->
-                 <div v-if="categoria.archivos.length === 0" class="no-files">
-                  <i class="fas fa-folder-open"></i> No hay archivos en esta categoría.
+          <!-- Bucle para mostrar las categorías -->
+          <template v-else v-for="categoria in categorias" :key="categoria.id">
+            <!-- Fila principal de la categoría -->
+            <tr class="category-row" @click="toggleCategory(categoria.id)">
+              <td class="text-center">
+                <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+              </td>
+              <td>{{ categoria.tipo_documento.nombre }}</td>
+              <td class="text-center">
+                <span class="file-count-badge">{{ categoria.archivos.length }}</span>
+              </td>
+              <td class="text-center">
+                <label class="action-button upload small">
+                  <i class="fas fa-upload"></i> Subir
+                  <input type="file" @change="handleUpload($event, categoria.id)" class="file-input">
+                </label>
+              </td>
+            </tr>
+            <!-- Fila desplegable con la lista de archivos -->
+            <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
+              <td colspan="4">
+                <div class="files-list">
+                  <div v-if="categoria.archivos.length === 0" class="no-files">
+                    <i class="fas fa-folder-open"></i> No hay archivos en esta categoría.
+                  </div>
+                  <table v-else class="files-table">
+                    <thead>
+                      <tr>
+                        <th>Nombre del archivo</th>
+                        <th>Subido por</th>
+                        <th class="text-center">Descargar</th>
+                        <th class="text-center">Borrar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="archivo in categoria.archivos" :key="archivo.id">
+                        <td>
+                          <i class="fas fa-file-alt"></i> {{ archivo.archivo.split('/').pop() }}
+                        </td>
+                        <td class="text-center">
+                          <span class="uploader-badge" :class="archivo.subido_por">
+                            {{ archivo.subido_por }}
+                          </span>
+                        </td>
+                        <td class="text-center">
+                          <button @click="triggerDownload(archivo.archivo)" class="action-button download" title="Descargar archivo">
+                            <i class="fas fa-download"></i>
+                          </button>
+                        </td>
+                        <td class="text-center">
+                          <button v-if="archivo.subido_por === 'cliente'" @click="confirmDelete(archivo.id)" class="action-button delete" title="Borrar archivo">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-
-                <!--Cuando se despliegue la lista, se mostrará este código que renderiza los archivos a mostrar-->
-                <ul>
-                  <li v-for="archivo in categoria.archivos" :key="archivo.id">
-
-                    <span class="file-info">
-                      <i class="fas fa-file-alt"></i>
-                        {{ archivo.archivo.split('/').pop() }}
-                        <small> (subido por: {{ archivo.subido_por }})</small>
-                    </span>
-                    
-                    <div  class="file-actions">
-                      <button @click="triggerDownload(archivo.archivo)" class="action-button download small">
-                        <i class="fas fa-download"></i> Descargar
-                      </button>
-
-                      <button v-if="archivo.subido_por === 'cliente' " @click="confirmDelete(archivo.id)" class="action-button delete small">
-                        <i class="fas fa-trash-alt"></i> Borrar
-                      </button>
-                    </div>
-
-                  </li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-        </template>
+              </td>
+            </tr>
+          </template>
+        </tbody>
       </table>
     </div>
 
-    <!-- Modal de confirmación para borrar -->
+    <!-- 5. Modal de Confirmación para Borrar -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
       <div class="modal-content">
-
         <h4><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h4>
-
         <p>¿Está seguro de que desea borrar este archivo? Esta acción no se puede deshacer.</p>
-
         <div class="modal-actions">
-          <button @click="showDeleteModal = false" class="button-secondary">
-              Cancelar
-          </button>
-
+          <button @click="showDeleteModal = false" class="button-secondary">Cancelar</button>
           <button @click="executeDelete" class="button-danger" :disabled="isDeleting">
             <i v-if="isDeleting" class="fas fa-spinner fa-spin"></i>
             <span v-else>Sí, Borrar</span>
@@ -114,21 +117,16 @@
         </div>
       </div>
     </div>
-
-    <button @click="isLogout = true" class="logout-button">
-      <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-    </button>
-
-    <!-- Modal de confirmación para borrar -->
+    
+    <!-- 6. Modal de Confirmación para Cerrar Sesión -->
     <transition name="modal-fade">
       <div v-if="isLogout" class="modal-overlay" @click.self="isLogout = false">
-
         <div class="modal-content logout-modal">
           <div class="modal-icon">
             <i class="fas fa-sign-out-alt fa-3x"></i>
           </div>
           <h4>¿Cerrar sesión?</h4>
-          <p>¿Está seguro de que desea salir de su cuenta?<br>Sus cambios estarán guardados.</p>
+          <p>¿Está seguro de que desea salir de su cuenta?</p>
           <div class="modal-actions">
             <button @click="isLogout = false" class="button-secondary">
               Cancelar
@@ -142,8 +140,7 @@
     </transition>
 
   </div>
-  
-  </template>
+</template>
 
 <script setup>
 
@@ -187,12 +184,14 @@ async function triggerDownload(fileUrl) {
     const response = await axios.get(fileUrl, { responseType: 'blob' });
     const url = window.URL.createObjectURL(response.data);
     const link = document.createElement('a');
+
     link.href = url;
     link.setAttribute('download', fileUrl.split('/').pop() || 'download');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+
   } catch (error) {
     console.error('Error al descargar el archivo:', error);
     alert('No se pudo descargar el archivo.');
