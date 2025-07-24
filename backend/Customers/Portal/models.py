@@ -24,7 +24,7 @@ class Cliente(models.Model):
 #Esta clase permitirá crear categorias de documentos desde el panel de administración de Django
 class TipoDocumento(models.Model):
     nombre = models.CharField(max_length=150, unique=True)
-    codigo = models.CharField(max_length=10, unique=True)
+    # codigo = models.CharField(max_length=10, unique=True)
     def __str__(self):
         return self.nombre
 

@@ -47,24 +47,21 @@
     try {
       console.log("2.-");
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
-      const tokenPath = `${baseUrl}/api/token/`
+      const Path = `${baseUrl}/api/token/`
       // const path = `${baseUrl}/api/token/`;
-      console.log("3.-", tokenPath);
-
-      const response = await axios.post(tokenPath, {
+      console.log("3")
+      const response = await axios.post(Path, {
         username: username.value,
         password: password.value
-      },
-      {
-        headers: {
-          "Content-Type": 'application/json',
-          "Accept":'application/json',
-        },
-        withCredentials: true,
-      });
-
-      console.log("4.- si vemos esto, la api responde bien 200")
-
+      },);
+      console.log("4")      
+      // {
+      //   headers: {
+      //     "Content-Type": 'application/json',
+      //     "Accept":'application/json',
+      //   },
+      //   withCredentials: true,
+      
       localStorage.setItem('accessToken', response.data.access);
       // Cuando se obtenga un 200 como respuesta se reocaliza a la vista dependiendo de su nivel de usuario
       router.push('/portal');

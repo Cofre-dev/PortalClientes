@@ -40,7 +40,7 @@ urlpatterns = [
     
     #---- Endpoints de la API ----
     path('api/', include(router.urls)),
-    path('api/token/', include(router.urls)),
+    # path('api/token/', include(router.urls)),
 ]
 
 if settings.DEBUG:

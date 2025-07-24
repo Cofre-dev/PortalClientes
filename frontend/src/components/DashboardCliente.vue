@@ -6,9 +6,6 @@
       <h1 class="titulo">Portal de Clientes</h1>
       <div class="profile-info">
         <span>Bienvenido/a, <strong>{{ profile.company_name }}</strong></span>
-        <button @click="isLogout = true" class="logout-button">
-          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </button>
       </div>
     </div>
 
@@ -45,16 +42,19 @@
               <td class="text-center">
                 <i class="fas chevron-icon" :class="isCategoryOpen(categoria.id) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
               </td>
+
               <td>{{ categoria.tipo_documento.nombre }}</td>
               <td class="text-center">
                 <span class="file-count-badge">{{ categoria.archivos.length }}</span>
               </td>
+
               <td class="text-center">
                 <label class="action-button upload small">
                   <i class="fas fa-upload"></i> Subir
                   <input type="file" @change="handleUpload($event, categoria.id)" class="file-input">
                 </label>
               </td>
+
             </tr>
             <!-- Fila desplegable con la lista de archivos -->
             <tr v-if="isCategoryOpen(categoria.id)" class="files-row">
@@ -102,6 +102,10 @@
         </tbody>
       </table>
     </div>
+
+    <button @click="isLogout = true" class="logout-button">
+      <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </button>
 
     <!-- 5. Modal de Confirmación para Borrar -->
     <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
@@ -199,16 +203,23 @@ async function triggerDownload(fileUrl) {
 }
 
 async function handleUpload(event, categoriaId) {
+  console.log("1")
   const file = event.target.files?.[0];
   if (!file) return;
+  console.log("2")
   const formData = new FormData();
   formData.append('file', file);
   try {
-    await apiClient.post(`/categorias/${categoriaId}/upload-file/`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+    console.log("3")
+    await apiClient.post(`api/categorias/${categoriaId}/upload-file/`, formData, {
+      headers: { 
+        'Content-Type': 'multipart/form-data'
+       }
     });
+    console.log("4")
     await fetchCategorias();
     openCategories.value.add(categoriaId);
+    console.log("5")
   } catch (error) {
     alert('Error al subir el archivo.');
   }
