@@ -202,29 +202,6 @@ async function triggerDownload(fileUrl) {
   }
 }
 
-async function handleUpload(event, categoriaId) {
-  console.log("1")
-  const file = event.target.files?.[0];
-  if (!file) return;
-  console.log("2")
-  const formData = new FormData();
-  formData.append('file', file);
-  try {
-    console.log("3")
-    await apiClient.post(`api/categorias/${categoriaId}/upload-file/`, formData, {
-      headers: { 
-        'Content-Type': 'multipart/form-data'
-       }
-    });
-    console.log("4")
-    await fetchCategorias();
-    openCategories.value.add(categoriaId);
-    console.log("5")
-  } catch (error) {
-    alert('Error al subir el archivo.');
-  }
-}
-
 async function fetchCategorias() {
   loading.value = true;
   try {
@@ -234,6 +211,22 @@ async function fetchCategorias() {
     console.error("Error al cargar categorías:", error);
   } finally {
     loading.value = false;
+  }
+}
+
+async function handleUpload(event, categoriaId) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    await apiClient.post(`/categorias/${categoriaId}/upload-file/`, formData);
+    await fetchCategorias();
+    openCategories.value.add(categoriaId);
+  } catch (error) {
+    alert('Error al subir el archivo.');
   }
 }
 
