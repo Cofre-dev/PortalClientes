@@ -79,17 +79,18 @@
                         </td>
                         <td class="text-center">
                           <span class="uploader-badge" :class="archivo.subido_por">
-                            {{ archivo.subido_por }}
+                            {{ archivo.subido_por}}
                           </span>
+                          
                         </td>
                         <td class="text-center">
                           <button @click="triggerDownload(archivo.archivo)" class="action-button download" title="Descargar archivo">
-                            <i class="fas fa-download"></i>
+                            <i class="fas fa-download">Descargar</i>
                           </button>
                         </td>
                         <td class="text-center">
                           <button v-if="archivo.subido_por === 'cliente'" @click="confirmDelete(archivo.id)" class="action-button delete" title="Borrar archivo">
-                            <i class="fas fa-trash-alt"></i>
+                            <i class="fas fa-trash-alt">Borrar</i>
                           </button>
                         </td>
                       </tr>
@@ -420,7 +421,7 @@ thead th {
 
 /*No toma el valor de este código, se comentará */
 .category-row:hover {
-  background-color: #102380;
+  background-color: #030c44;
 }
 
 tbody td {
@@ -556,10 +557,11 @@ tbody tr:last-child td {
   background-color: var(--info-color);
 }
 .action-button {
+  color: #030c44;
   display:flow-root ;
   align-items: center;
   gap: 5px;
-  padding: 7px 15px;
+  padding: 7px 35px;
   border-radius: 5px;
   text-decoration: none;
   font-weight: 500;
@@ -569,18 +571,20 @@ tbody tr:last-child td {
   border: none;
   font-family: inherit;
   font-size: 0.9em;
+  margin-left: 2px;
 
 }
 .action-button.download {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: #0600aa;
+  color: rgb(235, 230, 230);
 }
+
 .action-button.download:hover { 
-  background-color: #0056b3;
+  background-color: #13c825;
 }
 
 .action-button.delete {
- background-color: var(--danger-color); 
+ background-color: #0600aa; 
   color: white;
 }
 

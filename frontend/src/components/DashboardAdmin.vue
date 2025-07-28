@@ -80,7 +80,7 @@
                     <span class="file-info">
                       <i class="fas fa-file-alt"></i>
                         {{ archivo.archivo.split('/').pop() }}
-                      <small> (subido por: {{ archivo.subido_por }})</small>
+                      <small> Subido por: {{ archivo.subido_por }}</small>
                     </span>
 
                     <div class="file-actions">

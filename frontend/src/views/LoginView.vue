@@ -22,6 +22,7 @@
   import { ref } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
+  import apiService from '@/services/apiService';
   // import { loadEnvFile } from 'process';
 
   const loading = ref(false);
@@ -45,52 +46,22 @@
     }
 
     try {
-      console.log("2.-");
       const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
       const Path = `${baseUrl}/api/token/`
       // const path = `${baseUrl}/api/token/`;
-      console.log("3")
-      const response = await axios.post(Path, {
+      await apiService.login({
         username: username.value,
         password: password.value
-      },);
-      console.log("4")      
-      // {
-      //   headers: {
-      //     "Content-Type": 'application/json',
-      //     "Accept":'application/json',
-      //   },
-      //   withCredentials: true,
+      },);   
       
-      localStorage.setItem('accessToken', response.data.access);
+      // localStorage.setItem('refreshToken', response.data.access);
       // Cuando se obtenga un 200 como respuesta se reocaliza a la vista dependiendo de su nivel de usuario
       router.push('/portal');
 
       // Implementando nueva logica
      } catch (err) {
-      // Robust error handling for Axios errors
-      if (axios.isAxiosError(err)) {
-        if (err.response) {
-          if (err.response.status === 400 || err.response.status === 401) {
-            error.value = "Usuario o contraseña incorrectos.";
-            console.error("Error de autenticación (credenciales/solicitud):", err.response.data);
-          } else {
-            error.value = `Error del servidor: ${err.response.status}. Intente de nuevo.`;
-            console.error("Error del servidor inesperado:", err.response.data);
-          }
-        } else if (err.request) {
-          error.value = `No se pudo conectar al servidor. Verifique su conexión o la configuración CORS.`. err.message;
-          console.error("Error de red/conexión (Axios err.request):", err.message);
-        } else {
-          error.value = 'Error al configurar la solicitud. Intente de nuevo.';
-          console.error("Error de Axios (configuración):", err.message);
-        }
-      } else {
-        error.value = 'Ocurrió un error inesperado.';
-        console.error("Error inesperado (no-Axios):", err);
-      }
+      error.value = 'Usuario o contraseña incorrecto'
      } finally {
-        console.log("Fin de la función login");
         loading.value = false;
     }
   }

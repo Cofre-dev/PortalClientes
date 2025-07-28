@@ -14,7 +14,6 @@ class ProfileView(views.APIView):
         
         if hasattr(request.user, 'administrador'):
             profile = request.user.administrador    
-            #Diccionario con datos de los empleados
             data = {
                 'username': request.user.username,
                 'full_name':request.user.get_full_name(),
@@ -67,7 +66,7 @@ class CategoriaDocumentoViewSet(viewsets.ModelViewSet):
             categoria=categoria,
             archivo=archivo,
             subido_por=subido_por,
-            correlarivo = next_correlativo
+            correlativo = next_correlativo,
         )
         return Response({'status': 'archivo subido'}, status=status.HTTP_201_CREATED)
 
