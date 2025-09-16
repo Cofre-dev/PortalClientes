@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://127.0.0.1:8000';
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+// const API_BASE_URL = 'http://127.0.0.1:8000';
 
 // 1. Creamos una instancia de Axios con la configuración base.
 const apiClient = axios.create({

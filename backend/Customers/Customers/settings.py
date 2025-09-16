@@ -104,6 +104,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'araybust_documentos',  # Reemplaza con el nombre de tu base de datos
+#         'USER': 'araybust_matiascofre',   # Reemplaza con tu usuario de la base de datos
+#         'PASSWORD': '-----',           # Reemplaza con tu contraseña
+#         'HOST': 'localhost',                   # A menudo es 'localhost', pero puede ser una IP o dominio
+#         'PORT': '3306',                        # El puerto por defecto de MySQL
+#     }
+# }
+
+
 #Modificación del archivo para que seleccione la base de dato que este definida
 # DATABASE_URL = os.environ.get('DATABASE_URL')   
 # if DATABASE_URL:

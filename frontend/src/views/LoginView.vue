@@ -9,7 +9,9 @@
 
           <input v-model="password" type="password" placeholder="Contraseña" class="input" required />
 
-          <button @click="login" class="login-button">Ingresar</button>
+          <div class="botones">
+            <button @click="login" class="login-button">Ingresar</button>
+          </div>
 
           <p v-if="error" class="error-message">{{ error }}</p>
       </div>
@@ -42,7 +44,7 @@
       error.value = "Credenciales vacías";
       alert("Debe ingresar sus credenciales")
       loading.value = false
-      return; //These step stoped the execition if credentials are empty
+      return; 
     }
 
     try {
@@ -69,6 +71,7 @@
 </script>
 
 <style scoped>
+
 
 html, body {
   margin: 0;
