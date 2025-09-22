@@ -3,6 +3,7 @@
     <!-- Hero Section -->
     <div class="hero-section">
       <div class="hero-content">
+
         <div class="admin-welcome">
           <h1 class="hero-title">
             <i class="fas fa-shield-alt"></i>
@@ -12,31 +13,20 @@
             {{ profile.full_name || profile.username }}
             <span class="role-badge">{{ profile.role_detail }}</span>
           </p>
+
           <div class="admin-actions">
             <button @click="refreshData" class="action-btn refresh" :disabled="loading">
               <i class="fas fa-sync-alt" :class="{ 'fa-spin': loading }"></i>
               <span>Actualizar</span>
             </button>
+
             <button @click="isLogout = true" class="action-btn logout">
               <i class="fas fa-sign-out-alt"></i>
               <span>Salir</span>
             </button>
+
           </div>
         </div>
-      </div>
-      <div class="hero-decoration">
-        <!-- <div class="floating-stat">
-          <i class="fas fa-users"></i>
-          <span>{{ adminStats.total_clientes }}</span>
-        </div> -->
-        <!-- <div class="floating-stat delay-1">
-          <i class="fas fa-file-alt"></i>
-          <span>{{ adminStats.total_archivos }}</span>
-        </div>
-        <div class="floating-stat delay-2">
-          <i class="fas fa-chart-line"></i>
-          <span>{{ adminStats.total_categorias }}</span>
-        </div> -->
       </div>
     </div>
 

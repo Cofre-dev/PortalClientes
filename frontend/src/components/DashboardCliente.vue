@@ -857,10 +857,10 @@ onMounted(fetchCategorias);
 }
 
 
-.stat-card.modern:hover .stat-background {
+/* .stat-card.modern:hover .stat-background {
   opacity: 0.6;
   transform: scale(1.1);
-}
+} */
 
 .stat-background i {
   font-size: 1.5rem;
