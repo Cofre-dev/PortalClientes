@@ -1,130 +1,187 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+
+const router = useRouter()
+const currentRoute = ref('')
+
+onMounted(() => {
+  currentRoute.value = router.currentRoute.value.name
+  router.afterEach((to) => {
+    currentRoute.value = to.name
+  })
+})
 </script>
 
 <template>
-  <header>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" -->
-    
-    <img alt="Vue logo" class="logo" src="@/assets/image.png" width="325" height="325" /> <!--Imagen de la empresa-->
+  <div class="app-container">
+    <header v-if="currentRoute !== 'portal'" class="main-header">
+      <div class="header-content">
+        <div class="logo-container">
+          <img alt="Ara y Bustamante Logo" class="logo" src="@/assets/image.png" />
+        </div>
+        <div class="company-info">
+          <HelloWorld msg="Ara y Bustamante Consultores" />
+        </div>
+      </div>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="Ara y Bustamante Consultores" />
-    </div>
-  </header>
-
-  <RouterView />
+    <main class="main-content" :class="{ 'full-width': currentRoute === 'portal' }">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-
-html{
-  overflow-x: auto;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #f4f7fb;
-  font-family: 'Segoe UI', sans-serif;
-  line-height: 1.5;
-  padding: 40px; 
+/* Reset y variables globales */
+.app-container {
   min-height: 100vh;
-  width: 42vw;
-  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fb;
+  overflow-x: hidden;
 }
 
-body{
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-header {
+/* Header principal */
+.main-header {
+  background: linear-gradient(135deg, #021144 0%, #061656 100%);
+  min-height: 100vh;
+  width: 50%;
   position: fixed;
   top: 0;
   left: 0;
-  height: 42vh;
-  background-color: #021144;
-  line-height: 1.4;
-  padding: 25px; 
-  min-height: 100vh;
-  width: 790px;
-  box-sizing: border-box;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-.Home{
-  border-radius: 100%;
-  font-size: 1.6rem;
+.header-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
 }
 
- .logo {
-  max-width: 500px;
-  margin-bottom: 20px;
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+.logo-container {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  max-width: 100%;
+  height: auto;
+  width: clamp(200px, 50vw, 400px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  filter: brightness(1.1);
 }
 
 .logo:hover {
-  transform: scale(1.1);
-}
-.logo:delay{
-  transition-duration: 2s;
-  transition-delay: 2s;
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
 }
 
-nav {
+.company-info {
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+/* Contenido principal */
+.main-content {
+  margin-left: 50%;
+  width: 50%;
+  min-height: 100vh;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.main-content.full-width {
+  margin-left: 0;
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .main-header {
+    width: 45%;
+  }
+
+  .main-content {
+    margin-left: 45%;
+    width: 55%;
+  }
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+@media (max-width: 968px) {
+  .main-header {
+    position: relative;
+    width: 100%;
+    min-height: 60vh;
+    padding: 1.5rem;
+  }
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  .main-content {
+    margin-left: 0;
+    width: 100%;
   }
 
   .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+    width: clamp(150px, 40vw, 300px);
   }
 }
 
+@media (max-width: 768px) {
+  .main-header {
+    min-height: 50vh;
+    padding: 1rem;
+  }
+
+  .logo {
+    width: clamp(120px, 35vw, 250px);
+  }
+
+  .header-content {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header {
+    min-height: 40vh;
+    padding: 0.8rem;
+  }
+
+  .logo {
+    width: clamp(100px, 30vw, 200px);
+  }
+
+  .logo-container {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Estados específicos para login - Aplicar siempre que no sea full-width */
+.main-content:not(.full-width) {
+  background: linear-gradient(135deg, #2bd17b, #061656);
+}
+
+@media (max-width: 968px) {
+  .main-content:not(.full-width) {
+    background: linear-gradient(135deg, #2bd17b, #061656);
+  }
+}
 </style>
