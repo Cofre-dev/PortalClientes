@@ -1,0 +1,2 @@
+Este es un archivo de ejemplo para demostrar que el sistema funciona.
+Los archivos reales se subirían aquí cuando el sistema esté en producción.

@@ -1,0 +1,2 @@
+Archivo de ejemplo subido por el cliente.
+Este directorio contendrá los archivos que suban los clientes.

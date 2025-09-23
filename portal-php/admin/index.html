@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Portal de Clientes</title>
+    <link rel="stylesheet" href="../frontend/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-nav {
+            background: #343a40;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-nav .nav-brand {
+            color: #ffc107;
+        }
+
+        .admin-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-tab {
+            padding: 1rem 2rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: background 0.3s;
+        }
+
+        .admin-tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .admin-tab:hover {
+            background: #e9ecef;
+        }
+
+        .admin-tab.active:hover {
+            background: #0056b3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .admin-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Admin -->
+        <div id="adminLoginScreen" class="screen active">
+            <div class="login-container">
+                <div class="login-form">
+                    <div class="logo">
+                        <i class="fas fa-user-shield"></i>
+                        <h1>Panel de Administración</h1>
+                    </div>
+
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <label for="adminUsername">Usuario Administrador</label>
+                            <input type="text" id="adminUsername" name="username" value="admin" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminPassword">Contraseña</label>
+                            <input type="password" id="adminPassword" name="password" value="admin123" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Acceder al Panel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Admin -->
+        <div id="adminPanelScreen" class="screen">
+            <nav class="admin-nav">
+                <div class="nav-brand">
+                    <i class="fas fa-user-shield"></i>
+                    Panel de Administración
+                </div>
+                <div class="nav-user">
+                    <span id="adminUserInfo">Administrador</span>
+                    <button id="adminLogoutBtn" class="btn btn-outline">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </nav>
+
+            <div class="admin-container">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showTab('usuarios')">
+                        <i class="fas fa-users"></i>
+                        Usuarios
+                    </button>
+                    <button class="admin-tab" onclick="showTab('clientes')">
+                        <i class="fas fa-building"></i>
+                        Clientes
+                    </button>
+                    <button class="admin-tab" onclick="showTab('documentos')">
+                        <i class="fas fa-file-alt"></i>
+                        Documentos
+                    </button>
+                    <button class="admin-tab" onclick="showTab('tipos')">
+                        <i class="fas fa-tags"></i>
+                        Tipos de Documento
+                    </button>
+                </div>
+
+                <!-- Tab Usuarios -->
+                <div id="usuarios-tab" class="tab-content active">
+                    <div class="admin-form">
+                        <h3><i class="fas fa-user-plus"></i> Crear Usuario</h3>
+                        <form id="createUserForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Usuario</label>
+                                    <input type="text" name="username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Rol</label>
+                                    <select name="role" required>
+                                        <option value="cliente">Cliente</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Crear Usuario
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="admin-form">
+                        <h3><i class="fas fa-users"></i> Lista de Usuarios</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuariosTableBody">
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab Clientes -->
+                <div id="clientes-tab" class="tab-content">
+                    <div class="admin-form">
+                        <h3><i class="fas fa-building"></i> Lista de Clientes</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Razón Social</th>
+                                    <th>RUT</th>
+                                    <th>Usuario</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientesTableBody">
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab Documentos -->
+                <div id="documentos-tab" class="tab-content">
+                    <div class="admin-form">
+                        <h3><i class="fas fa-plus-circle"></i> Crear Documento</h3>
+                        <form id="createDocumentForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cliente</label>
+                                    <select name="cliente_id" id="clienteSelect" required>
+                                        <!-- Se llena dinámicamente -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de Documento</label>
+                                    <select name="tipo_documento_id" id="tipoSelect" required>
+                                        <!-- Se llena dinámicamente -->
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Crear Documento
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="admin-form">
+                        <h3><i class="fas fa-file-alt"></i> Lista de Documentos</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Archivo Consultora</th>
+                                    <th>Archivo Cliente</th>
+                                    <th>Última Actualización</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentosTableBody">
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab Tipos -->
+                <div id="tipos-tab" class="tab-content">
+                    <div class="admin-form">
+                        <h3><i class="fas fa-tags"></i> Tipos de Documento</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Código</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tiposTableBody">
+                                <!-- Se llena dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading & Notifications (reutilizamos del frontend) -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando...</p>
+            </div>
+        </div>
+
+        <div id="notification" class="notification">
+            <span id="notificationText"></span>
+            <button id="closeNotification" class="close-btn">×</button>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

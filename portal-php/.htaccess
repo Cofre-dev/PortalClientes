@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Permitir acceso a archivos específicos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redireccionar a la raíz si se accede a directorios específicos
+RewriteRule ^$ frontend/index.html [L]
+
+# Permitir acceso a archivos en uploads
+RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+# Manejar las rutas de la API
+RewriteRule ^api/(.*)$ api/$1 [L]
+
+# Redireccionar todo lo demás al frontend
+RewriteRule ^(.*)$ frontend/index.html [L]
