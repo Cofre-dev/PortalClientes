@@ -3,355 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Portal de Clientes</title>
+    <title>ARA & Bustamante - Panel de Administración</title>
     <link rel="stylesheet" href="../frontend/css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .admin-nav {
-            background: #343a40;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-nav .nav-brand {
-            color: #ffc107;
-        }
-
-        .admin-container {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .admin-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .admin-tab {
-            padding: 1rem 2rem;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px 8px 0 0;
-            transition: background 0.3s;
-        }
-
-        .admin-tab.active {
-            background: #007bff;
-            color: white;
-        }
-
-        .admin-tab:hover {
-            background: #e9ecef;
-        }
-
-        .admin-tab.active:hover {
-            background: #0056b3;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .data-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-        }
-
-        .data-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .admin-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-xs {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="admin-body">
     <div id="app">
         <!-- Login Admin -->
         <div id="adminLoginScreen" class="screen active">
-            <div class="login-container">
-                <div class="login-form">
-                    <div class="logo">
-                        <i class="fas fa-user-shield"></i>
-                        <h1>Panel de Administración</h1>
+            <div class="admin-login-background">
+                <div class="admin-login-container">
+                    <div class="admin-login-form">
+                        <div class="admin-logo">
+                            <div class="admin-logo-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h1>ARA & BUSTAMANTE</h1>
+                            <p>Panel de Administración</p>
+                        </div>
+
+                        <div class="admin-form-section">
+                            <h2>Acceso Administrativo</h2>
+                            <form id="adminLoginForm">
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-user-shield"></i>
+                                        <input type="text" id="adminUsername" name="username" placeholder="Usuario Administrador" value="admin" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-key"></i>
+                                        <input type="password" id="adminPassword" name="password" placeholder="Contraseña" value="admin123" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Acceder al Panel
+                                </button>
+                            </form>
+                        </div>
                     </div>
-
-                    <form id="adminLoginForm">
-                        <div class="form-group">
-                            <label for="adminUsername">Usuario Administrador</label>
-                            <input type="text" id="adminUsername" name="username" value="admin" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="adminPassword">Contraseña</label>
-                            <input type="password" id="adminPassword" name="password" value="admin123" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Acceder al Panel
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
 
         <!-- Panel Admin -->
         <div id="adminPanelScreen" class="screen">
-            <nav class="admin-nav">
-                <div class="nav-brand">
-                    <i class="fas fa-user-shield"></i>
-                    Panel de Administración
+            <div class="admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="brand-logo">
+                        <i class="fas fa-calculator"></i>
+                        <div class="brand-text">
+                            <h3>ARA & BUSTAMANTE</h3>
+                            <span>Panel de Administración</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="nav-user">
-                    <span id="adminUserInfo">Administrador</span>
-                    <button id="adminLogoutBtn" class="btn btn-outline">
+
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <h4>GESTIÓN</h4>
+                        <ul>
+                            <li><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-chart-line"></i>Dashboard</a></li>
+                            <li><a href="#" class="nav-link" data-tab="usuarios"><i class="fas fa-users"></i>Usuarios</a></li>
+                            <li><a href="#" class="nav-link" data-tab="clientes"><i class="fas fa-building"></i>Empresas</a></li>
+                            <li><a href="#" class="nav-link" data-tab="documentos"><i class="fas fa-folder-open"></i>Documentos</a></li>
+                            <li><a href="#" class="nav-link" data-tab="categorias"><i class="fas fa-tags"></i>Categorías</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>SISTEMA</h4>
+                        <ul>
+                            <li><a href="#" class="nav-link" data-tab="configuracion"><i class="fas fa-cog"></i>Configuración</a></li>
+                            <li><a href="#" class="nav-link" data-tab="logs"><i class="fas fa-file-alt"></i>Logs</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="admin-user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="user-details">
+                            <span class="user-name" id="adminUserInfo">Administrador</span>
+                            <span class="user-role">Super Admin</span>
+                        </div>
+                    </div>
+                    <button id="adminLogoutBtn" class="btn-logout">
                         <i class="fas fa-sign-out-alt"></i>
-                        Cerrar Sesión
                     </button>
                 </div>
-            </nav>
+            </div>
 
-            <div class="admin-container">
-                <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="showTab('usuarios')">
-                        <i class="fas fa-users"></i>
-                        Usuarios
-                    </button>
-                    <button class="admin-tab" onclick="showTab('clientes')">
-                        <i class="fas fa-building"></i>
-                        Clientes
-                    </button>
-                    <button class="admin-tab" onclick="showTab('documentos')">
-                        <i class="fas fa-file-alt"></i>
-                        Documentos
-                    </button>
-                    <button class="admin-tab" onclick="showTab('tipos')">
-                        <i class="fas fa-tags"></i>
-                        Tipos de Documento
-                    </button>
-                </div>
+            <main class="admin-main">
+                <header class="admin-header">
+                    <div class="header-left">
+                        <button class="sidebar-toggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="breadcrumb">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="currentPageTitle">Dashboard</span>
+                        </div>
+                    </div>
 
-                <!-- Tab Usuarios -->
-                <div id="usuarios-tab" class="tab-content active">
-                    <div class="admin-form">
-                        <h3><i class="fas fa-user-plus"></i> Crear Usuario</h3>
-                        <form id="createUserForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Usuario</label>
-                                    <input type="text" name="username" required>
+                    <div class="header-right">
+                        <div class="header-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span id="totalUsuarios">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-building"></i>
+                                <span id="totalClientes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span id="totalDocumentos">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="admin-content">
+                    <!-- Dashboard Tab -->
+                    <div id="dashboard-tab" class="tab-content active">
+                        <div class="dashboard-grid">
+                            <div class="stats-row">
+                                <div class="stat-card">
+                                    <div class="stat-icon success">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="dashboardUsuarios">0</h3>
+                                        <p>Usuarios Totales</p>
+                                        <span class="stat-change positive">+2 este mes</span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Contraseña</label>
-                                    <input type="password" name="password" required>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon primary">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="dashboardClientes">0</h3>
+                                        <p>Empresas Activas</p>
+                                        <span class="stat-change positive">+1 esta semana</span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="email" required>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon secondary">
+                                        <i class="fas fa-folder-open"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="dashboardDocumentos">0</h3>
+                                        <p>Documentos Gestionados</p>
+                                        <span class="stat-change positive">+15 hoy</span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Rol</label>
-                                    <select name="role" required>
-                                        <option value="cliente">Cliente</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon warning">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3>5</h3>
+                                        <p>Documentos Pendientes</p>
+                                        <span class="stat-change neutral">Sin cambios</span>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus"></i>
-                                Crear Usuario
-                            </button>
-                        </form>
-                    </div>
 
-                    <div class="admin-form">
-                        <h3><i class="fas fa-users"></i> Lista de Usuarios</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Usuario</th>
-                                    <th>Email</th>
-                                    <th>Rol</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="usuariosTableBody">
-                                <!-- Se llena dinámicamente -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Tab Clientes -->
-                <div id="clientes-tab" class="tab-content">
-                    <div class="admin-form">
-                        <h3><i class="fas fa-building"></i> Lista de Clientes</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Razón Social</th>
-                                    <th>RUT</th>
-                                    <th>Usuario</th>
-                                    <th>Fecha Creación</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="clientesTableBody">
-                                <!-- Se llena dinámicamente -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Tab Documentos -->
-                <div id="documentos-tab" class="tab-content">
-                    <div class="admin-form">
-                        <h3><i class="fas fa-plus-circle"></i> Crear Documento</h3>
-                        <form id="createDocumentForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Cliente</label>
-                                    <select name="cliente_id" id="clienteSelect" required>
-                                        <!-- Se llena dinámicamente -->
-                                    </select>
+                            <div class="dashboard-widgets">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4><i class="fas fa-chart-bar"></i> Actividad Reciente</h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="activity-list">
+                                            <div class="activity-item">
+                                                <div class="activity-icon success">
+                                                    <i class="fas fa-plus"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <p>Nuevo cliente registrado: <strong>Empresa ABC</strong></p>
+                                                    <span class="activity-time">Hace 2 horas</span>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-icon primary">
+                                                    <i class="fas fa-upload"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <p>Documento subido por <strong>Empresa XYZ</strong></p>
+                                                    <span class="activity-time">Hace 4 horas</span>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-icon warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <p>Categoría actualizada: <strong>Facturas</strong></p>
+                                                    <span class="activity-time">Ayer</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Tipo de Documento</label>
-                                    <select name="tipo_documento_id" id="tipoSelect" required>
-                                        <!-- Se llena dinámicamente -->
-                                    </select>
+
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4><i class="fas fa-exclamation-triangle"></i> Alertas del Sistema</h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="alert-list">
+                                            <div class="alert-item warning">
+                                                <i class="fas fa-hdd"></i>
+                                                <span>Uso de almacenamiento al 75%</span>
+                                            </div>
+                                            <div class="alert-item success">
+                                                <i class="fas fa-shield-alt"></i>
+                                                <span>Sistema seguro y actualizado</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus"></i>
-                                Crear Documento
-                            </button>
-                        </form>
+                        </div>
                     </div>
 
-                    <div class="admin-form">
-                        <h3><i class="fas fa-file-alt"></i> Lista de Documentos</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Cliente</th>
-                                    <th>Tipo</th>
-                                    <th>Archivo Consultora</th>
-                                    <th>Archivo Cliente</th>
-                                    <th>Última Actualización</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="documentosTableBody">
-                                <!-- Se llena dinámicamente -->
-                            </tbody>
-                        </table>
+                    <!-- Usuarios Tab -->
+                    <div id="usuarios-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-users"></i> Gestión de Usuarios</h2>
+                            <button class="btn btn-primary" id="createUserBtn">
+                                <i class="fas fa-plus"></i>
+                                Nuevo Usuario
+                            </button>
+                        </div>
+
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usuariosTableBody">
+                                    <!-- Se llena dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Clientes Tab -->
+                    <div id="clientes-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-building"></i> Gestión de Empresas</h2>
+                            <button class="btn btn-primary" id="createClientBtn">
+                                <i class="fas fa-plus"></i>
+                                Nueva Empresa
+                            </button>
+                        </div>
+
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Razón Social</th>
+                                        <th>RUT</th>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>Documentos</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientesTableBody">
+                                    <!-- Se llena dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Documentos Tab -->
+                    <div id="documentos-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-folder-open"></i> Gestión de Documentos</h2>
+                            <div class="header-actions">
+                                <button class="btn btn-secondary" id="uploadDocumentBtn">
+                                    <i class="fas fa-upload"></i>
+                                    Subir Documento
+                                </button>
+                                <button class="btn btn-outline" id="exportDocumentsBtn">
+                                    <i class="fas fa-download"></i>
+                                    Exportar Lista
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="documents-filters">
+                            <div class="filter-group">
+                                <label>Filtrar por Empresa:</label>
+                                <select id="filterClient">
+                                    <option value="">Todas las empresas</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Filtrar por Categoría:</label>
+                                <select id="filterCategory">
+                                    <option value="">Todas las categorías</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Estado:</label>
+                                <select id="filterStatus">
+                                    <option value="">Todos</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="approved">Aprobado</option>
+                                    <option value="rejected">Rechazado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Empresa</th>
+                                        <th>Categoría</th>
+                                        <th>Nombre Archivo</th>
+                                        <th>Tamaño</th>
+                                        <th>Subido Por</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="documentosTableBody">
+                                    <!-- Se llena dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Categorías Tab -->
+                    <div id="categorias-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-tags"></i> Gestión de Categorías</h2>
+                            <button class="btn btn-primary" id="createCategoryAdminBtn">
+                                <i class="fas fa-plus"></i>
+                                Nueva Categoría
+                            </button>
+                        </div>
+
+                        <div class="categories-admin-grid">
+                            <div id="categoriesAdminGrid" class="categories-grid">
+                                <!-- Las categorías se cargarán aquí dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración Tab -->
+                    <div id="configuracion-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-cog"></i> Configuración del Sistema</h2>
+                        </div>
+
+                        <div class="config-sections">
+                            <div class="config-section">
+                                <h3><i class="fas fa-server"></i> Configuración del Servidor</h3>
+                                <div class="config-item">
+                                    <label>Tamaño máximo de archivo (MB):</label>
+                                    <input type="number" value="10" min="1" max="100">
+                                </div>
+                                <div class="config-item">
+                                    <label>Tipos de archivo permitidos:</label>
+                                    <input type="text" value=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+                                </div>
+                                <button class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+
+                            <div class="config-section">
+                                <h3><i class="fas fa-shield-alt"></i> Configuración de Seguridad</h3>
+                                <div class="config-item">
+                                    <label>Tiempo de sesión (minutos):</label>
+                                    <input type="number" value="60" min="15" max="480">
+                                </div>
+                                <div class="config-item">
+                                    <label>Intentos de login máximos:</label>
+                                    <input type="number" value="5" min="3" max="10">
+                                </div>
+                                <button class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Logs Tab -->
+                    <div id="logs-tab" class="tab-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-file-alt"></i> Logs del Sistema</h2>
+                            <button class="btn btn-outline" id="clearLogsBtn">
+                                <i class="fas fa-trash"></i>
+                                Limpiar Logs
+                            </button>
+                        </div>
+
+                        <div class="logs-container">
+                            <div class="log-filters">
+                                <select id="logType">
+                                    <option value="">Todos los tipos</option>
+                                    <option value="login">Login</option>
+                                    <option value="upload">Subida</option>
+                                    <option value="delete">Eliminación</option>
+                                    <option value="error">Error</option>
+                                </select>
+                                <input type="date" id="logDate">
+                                <button class="btn btn-secondary" id="filterLogsBtn">Filtrar</button>
+                            </div>
+
+                            <div class="logs-list" id="logsList">
+                                <!-- Los logs se cargarán aquí -->
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </main>
+        </div>
 
-                <!-- Tab Tipos -->
-                <div id="tipos-tab" class="tab-content">
-                    <div class="admin-form">
-                        <h3><i class="fas fa-tags"></i> Tipos de Documento</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Código</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tiposTableBody">
-                                <!-- Se llena dinámicamente -->
-                            </tbody>
-                        </table>
-                    </div>
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="userModalTitle"><i class="fas fa-user-plus"></i> Nuevo Usuario</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <input type="hidden" id="userId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="userUsername">Usuario *</label>
+                                <input type="text" id="userUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Email *</label>
+                                <input type="email" id="userEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="userPassword">Contraseña *</label>
+                                <input type="password" id="userPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="userRole">Rol *</label>
+                                <select id="userRole" required>
+                                    <option value="cliente">Cliente</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="userStatus">Estado:</label>
+                            <select id="userStatus">
+                                <option value="active">Activo</option>
+                                <option value="inactive">Inactivo</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-action="cancel">Cancelar</button>
+                    <button type="submit" form="userForm" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Usuario
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Loading & Notifications (reutilizamos del frontend) -->
+        <!-- Client Modal -->
+        <div id="clientModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="clientModalTitle"><i class="fas fa-building"></i> Nueva Empresa</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="clientForm">
+                        <input type="hidden" id="clientId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientRazonSocial">Razón Social *</label>
+                                <input type="text" id="clientRazonSocial" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientRut">RUT *</label>
+                                <input type="text" id="clientRut" placeholder="12345678-9" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientUsername">Usuario *</label>
+                                <input type="text" id="clientUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientEmail">Email *</label>
+                                <input type="email" id="clientEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientPassword">Contraseña *</label>
+                            <input type="password" id="clientPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-action="cancel">Cancelar</button>
+                    <button type="submit" form="clientForm" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Empresa
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Upload Modal -->
+        <div id="documentUploadModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3><i class="fas fa-upload"></i> Subir Documento</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="documentUploadForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="docClient">Empresa *</label>
+                                <select id="docClient" required>
+                                    <option value="">Seleccionar empresa</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="docCategory">Categoría *</label>
+                                <select id="docCategory" required>
+                                    <option value="">Seleccionar categoría</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="upload-area" id="adminUploadArea">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Arrastra archivos aquí o haz clic para seleccionar</p>
+                                <input type="file" id="adminFileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-action="cancel">Cancelar</button>
+                    <button type="submit" form="documentUploadForm" class="btn btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Subir Archivos
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
         <div id="loadingOverlay" class="loading-overlay">
             <div class="loading-spinner">
-                <i class="fas fa-spinner fa-spin"></i>
+                <div class="spinner"></div>
                 <p>Cargando...</p>
             </div>
         </div>
 
+        <!-- Notification -->
         <div id="notification" class="notification">
-            <span id="notificationText"></span>
-            <button id="closeNotification" class="close-btn">×</button>
+            <div class="notification-content">
+                <i class="notification-icon"></i>
+                <span id="notificationText"></span>
+            </div>
+            <button id="closeNotification" class="notification-close">&times;</button>
         </div>
     </div>
 
