@@ -1,7 +1,7 @@
 # 🏢 Portal de Clientes
 
 <div align="center">
-![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+[JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
 **Sistema integral de gestión documental y administración para empresas consultoras**
 
