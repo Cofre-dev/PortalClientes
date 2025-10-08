@@ -1,0 +1,41 @@
+[
+    {
+        "categoria_id": "1",
+        "cliente_id": 1,
+        "nombre_archivo": "7zhV1ETICKET.pdf",
+        "ruta_archivo": "uploads\/68d9da70ce62b_1759107696.pdf",
+        "tamano": 417912,
+        "tipo_mime": "application\/pdf",
+        "subido_por_cliente": true,
+        "fecha_subida": "2025-09-29 03:01:36",
+        "created_at": "2025-09-29 03:01:36",
+        "updated_at": "2025-09-29 03:01:36",
+        "id": 1
+    },
+    {
+        "categoria_id": "3",
+        "cliente_id": 1,
+        "nombre_archivo": "lorem ipsum.pdf",
+        "ruta_archivo": "uploads\/68d9dc18640c8_1759108120.pdf",
+        "tamano": 417912,
+        "tipo_mime": "application\/pdf",
+        "subido_por_cliente": true,
+        "fecha_subida": "2025-09-29 03:08:40",
+        "created_at": "2025-09-29 03:08:40",
+        "updated_at": "2025-09-29 03:09:05",
+        "id": 2
+    },
+    {
+        "categoria_id": "7",
+        "cliente_id": 1,
+        "nombre_archivo": "hola.pdf",
+        "ruta_archivo": "uploads\/68d9e382b0657_1759110018.pdf",
+        "tamano": 417912,
+        "tipo_mime": "application\/pdf",
+        "subido_por_cliente": true,
+        "fecha_subida": "2025-09-29 03:40:18",
+        "created_at": "2025-09-29 03:40:18",
+        "updated_at": "2025-09-29 03:43:25",
+        "id": 3
+    }
+]

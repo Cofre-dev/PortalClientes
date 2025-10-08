@@ -1,0 +1,122 @@
+[
+    {
+        "cliente_id": "3",
+        "nombre": "IVA",
+        "codigo": "IVA",
+        "descripcion": "Documentos para el pago de IVA",
+        "is_active": true,
+        "created_at": "2025-09-30 19:17:42",
+        "updated_at": "2025-09-30 19:17:42",
+        "id": 1
+    },
+    {
+        "cliente_id": "2",
+        "nombre": "Facturas de venta",
+        "codigo": "fact_venta",
+        "descripcion": "Facturas",
+        "is_active": true,
+        "created_at": "2025-09-30 20:29:46",
+        "updated_at": "2025-09-30 20:29:46",
+        "id": 3
+    },
+    {
+        "cliente_id": "2",
+        "nombre": "Factura compras",
+        "codigo": "fact",
+        "descripcion": "Facturas de compra",
+        "is_active": true,
+        "created_at": "2025-10-01 10:40:20",
+        "updated_at": "2025-10-01 10:40:20",
+        "id": 4
+    },
+    {
+        "cliente_id": "2",
+        "nombre": "Rodas de Bahia",
+        "codigo": "rodas",
+        "descripcion": "Documentos correspondientes a rodas de bahia",
+        "is_active": true,
+        "created_at": "2025-10-03 07:51:07",
+        "updated_at": "2025-10-03 07:51:07",
+        "id": 5
+    },
+    {
+        "cliente_id": "4",
+        "nombre": "Cachantun",
+        "codigo": "aa",
+        "descripcion": "Documentos de cachantun",
+        "is_active": true,
+        "created_at": "2025-10-05 10:42:53",
+        "updated_at": "2025-10-05 10:42:53",
+        "id": 6
+    },
+    {
+        "cliente_id": "5",
+        "nombre": "Rodas de bahia",
+        "codigo": "RODAS_DE_BAHIA",
+        "descripcion": "Documentos de rodas de bahia",
+        "is_active": true,
+        "created_at": "2025-10-06 09:07:19",
+        "updated_at": "2025-10-06 09:07:19",
+        "id": 7
+    },
+    {
+        "cliente_id": "5",
+        "nombre": "Lexcorp",
+        "codigo": "a",
+        "descripcion": "Documentos de lexcorp",
+        "is_active": true,
+        "created_at": "2025-10-06 09:46:07",
+        "updated_at": "2025-10-06 09:46:07",
+        "id": 8
+    },
+    {
+        "cliente_id": "5",
+        "nombre": "Francisco allende",
+        "codigo": "Francisco",
+        "descripcion": "documentos personales de francisco",
+        "is_active": true,
+        "created_at": "2025-10-06 11:44:06",
+        "updated_at": "2025-10-06 11:44:06",
+        "id": 9
+    },
+    {
+        "cliente_id": "6",
+        "nombre": "Rodas de bahia",
+        "codigo": "RODAS_DE_BAHIA",
+        "descripcion": "Documentos de rodas",
+        "is_active": true,
+        "created_at": "2025-10-06 11:47:44",
+        "updated_at": "2025-10-06 11:47:44",
+        "id": 10
+    },
+    {
+        "cliente_id": "6",
+        "nombre": "ARCON",
+        "codigo": "ARCON001",
+        "descripcion": "PRUEBA DE EMPRESA",
+        "is_active": true,
+        "created_at": "2025-10-06 15:16:07",
+        "updated_at": "2025-10-06 15:16:07",
+        "id": 11
+    },
+    {
+        "cliente_id": "2",
+        "nombre": "testestet",
+        "codigo": "TESTESTET",
+        "descripcion": "lorem ipsum",
+        "is_active": true,
+        "created_at": "2025-10-06 15:18:15",
+        "updated_at": "2025-10-06 15:18:15",
+        "id": 12
+    },
+    {
+        "cliente_id": "5",
+        "nombre": "Sydarta",
+        "codigo": "SYDARTA",
+        "descripcion": "Documentos de sydarta",
+        "is_active": true,
+        "created_at": "2025-10-07 08:50:30",
+        "updated_at": "2025-10-07 08:50:30",
+        "id": 13
+    }
+]

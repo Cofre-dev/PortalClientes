@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "$2y$10$oIdtVVawiYIe\/r\/\/Gcci0.X.n9ZHRH8YL8WI8CV\/\/hNIPrUAyBBry",
+        "email": "admin@araybustamante.com",
+        "role": "admin",
+        "is_active": true,
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-01 00:00:00"
+    },
+    {
+        "id": 2,
+        "username": "cliente1",
+        "password": "$2y$10$Z4vSxY00U1pdWzcVv67l5.6j24.gl6NrJDv.a32l96H4.xgkbsOHa",
+        "email": "cliente1@empresa.com",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-01 00:00:00"
+    },
+    {
+        "username": "carlos",
+        "password": "$2y$10$U\/rnlfAeEhMzB024zhCbg.z1lGJWovO7RQgnptehvfiRYWJ8Li\/fe",
+        "email": "carlos.ara@araybustamante.cl",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-09-30 13:08:29",
+        "id": 3,
+        "updated_at": "2025-09-30 13:08:30"
+    },
+    {
+        "username": "pancho",
+        "password": "$2y$10$HqIsRmvPO8kk4AWCxkZYfuU4qJ33n0jAzk9YfsXw1GyzELf6yKIFm",
+        "email": "rodas@gmail.com",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-09-30 13:21:43",
+        "id": 4,
+        "updated_at": "2025-09-30 13:21:43"
+    },
+    {
+        "username": "mcofre",
+        "password": "$2y$10$f6gG52T.RIgwS.ZM2fUQneckaL8hUc5fxtVGi8JvnF6VdJw5hkS7a",
+        "email": "rojascofrem@gmail.com",
+        "role": "admin",
+        "is_active": true,
+        "id": 5,
+        "created_at": "2025-09-30 18:54:01",
+        "updated_at": "2025-09-30 18:54:01"
+    },
+    {
+        "username": "renaldo",
+        "password": "$2y$10$cyWwJSzOEOUkOcWtD.p\/O.\/uHsDpXryc0ez489151vtOmEdOqUX.y",
+        "email": "contacto@araybustamante.cl",
+        "role": "admin",
+        "is_active": true,
+        "id": 6,
+        "created_at": "2025-10-01 10:41:25",
+        "updated_at": "2025-10-01 10:41:25"
+    },
+    {
+        "username": "matias",
+        "password": "$2y$10$b8JXgTJ8zys07M1EHIsiA.fiekKFIJgjA1RSG3wTzGxooUEtoMlye",
+        "email": "iilluminatii191@icloud.com",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-10-05 10:38:27",
+        "id": 7,
+        "updated_at": "2025-10-05 10:38:27"
+    },
+    {
+        "username": "hanns",
+        "password": "$2y$10$iR.LdKDHB2fj7xb1mS1DEe3EmJ41S00L704F8lyxEz3jviPw4grsG",
+        "email": "hannsspusch@icloud.com",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-10-05 10:39:55",
+        "id": 8,
+        "updated_at": "2025-10-05 10:39:55"
+    },
+    {
+        "username": "fallende",
+        "password": "$2y$10$Bxo7okTnYZ.wEsG685urmuwsIA6F0n5ephNccSpl555K\/.FJZCZje",
+        "email": "francisco@allende.cl",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-10-06 09:06:29",
+        "id": 9,
+        "updated_at": "2025-10-06 09:06:29"
+    },
+    {
+        "username": "cara",
+        "password": "$2y$10$kxwpzm8lvvK2XNER2reKqeH5vXyPi1jcmuABcmCB4SnOnDdCN17g.",
+        "email": "carlos.ara@araybustamente.cl",
+        "role": "admin",
+        "is_active": true,
+        "id": 10,
+        "created_at": "2025-10-06 11:45:23",
+        "updated_at": "2025-10-06 11:45:23"
+    },
+    {
+        "username": "feallende",
+        "password": "$2y$10$TiQ2hj6GwrJeayo\/FwZsHOWXj8Sb.COfoFRcu0j\/JOxt4lOWnh65.",
+        "email": "felipe@allende.cl",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2025-10-06 11:46:52",
+        "id": 11,
+        "updated_at": "2025-10-06 11:46:52"
+    },
+    {
+        "username": "anonymus",
+        "password": "$2y$10$oBI8EUxnHCCW5E3hAGpOBONNr2Il5ZkDggbBnv6b8pifguEsUi3He",
+        "email": "anon@anon.com",
+        "role": "admin",
+        "is_active": true,
+        "id": 12,
+        "created_at": "2025-10-06 15:21:47",
+        "updated_at": "2025-10-06 15:21:47"
+    }
+]

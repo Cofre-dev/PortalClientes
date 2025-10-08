@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "$2y$10$oIdtVVawiYIe/r//Gcci0.X.n9ZHRH8YL8WI8CV//hNIPrUAyBBry",
+        "email": "admin@araybustamante.com",
+        "role": "admin",
+        "is_active": true,
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-01 00:00:00"
+    },
+    {
+        "id": 2,
+        "username": "cliente1",
+        "password": "$2y$10$Z4vSxY00U1pdWzcVv67l5.6j24.gl6NrJDv.a32l96H4.xgkbsOHa",
+        "email": "cliente1@empresa.com",
+        "role": "cliente",
+        "is_active": true,
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-01 00:00:00"
+    }
+]

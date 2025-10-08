@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "user_id": 2,
+        "empresa": "Empresa Demo S.A.",
+        "nombre_cliente": "Cliente Demo",
+        "razon_social": "Empresa Demo S.A.",
+        "rut_empresa": "99999999-9",
+        "correo_contacto": "cliente1@empresa.com",
+        "telefono": "+56 9 8765 4321",
+        "direccion": "Av. Principal 123, Santiago, Chile",
+        "email": "cliente1@empresa.com",
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2025-09-30 20:34:36"
+    },
+    {
+        "razon_social": "ara y bustamante",
+        "rut_empresa": "78546132-5",
+        "email": "carlos.ara@araybustamante.cl",
+        "telefono": "+56958444125",
+        "direccion": "Isidora goyonechea 3250",
+        "user_id": 3,
+        "created_at": "2025-09-30 13:08:30",
+        "nombre_cliente": "Carlos ara",
+        "empresa": "ara y bustamante",
+        "correo_contacto": "carlos.ara@araybustamante.cl",
+        "id": 2,
+        "updated_at": "2025-09-30 13:08:30"
+    },
+    {
+        "razon_social": "matias",
+        "rut_empresa": "215461327",
+        "email": "iilluminatii191@icloud.com",
+        "telefono": "95884664741",
+        "direccion": "nueva uno",
+        "user_id": 7,
+        "created_at": "2025-10-05 10:38:27",
+        "nombre_cliente": "matias",
+        "empresa": "matias",
+        "correo_contacto": "iilluminatii191@icloud.com",
+        "id": 3,
+        "updated_at": "2025-10-05 10:38:27"
+    },
+    {
+        "razon_social": "Francisco Allende",
+        "rut_empresa": "21546132-7",
+        "email": "francisco@allende.cl",
+        "telefono": "+56958444125",
+        "direccion": "N\/A",
+        "user_id": 9,
+        "created_at": "2025-10-06 09:06:29",
+        "nombre_cliente": "Francisco allende",
+        "empresa": "Francisco Allende",
+        "correo_contacto": "francisco@allende.cl",
+        "id": 5,
+        "updated_at": "2025-10-06 09:06:29"
+    },
+    {
+        "razon_social": "Felipe Allende",
+        "rut_empresa": "45124987-8",
+        "email": "felipe@allende.cl",
+        "telefono": "+56958444125",
+        "direccion": "nueva uno",
+        "user_id": 11,
+        "created_at": "2025-10-06 11:46:52",
+        "nombre_cliente": "Felipe Allende",
+        "empresa": "Felipe Allende",
+        "correo_contacto": "felipe@allende.cl",
+        "id": 6,
+        "updated_at": "2025-10-06 11:46:52"
+    }
+]
