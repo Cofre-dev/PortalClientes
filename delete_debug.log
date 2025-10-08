@@ -1,0 +1,88 @@
+=== 2025-09-30 14:03:05 ===
+Method: DELETE
+URL: /test_delete.php
+Headers:
+  Host: localhost
+  Connection: keep-alive
+  Content-Length: 29
+  Pragma: no-cache
+  Cache-Control: no-cache
+  X-Access-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzIwMTcyfQ.YobFpYtnYkNaUY1pkpteFE5DssJFmepTu6X6sd1sZf0
+  sec-ch-ua-platform: "Windows"
+  Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzIwMTcyfQ.YobFpYtnYkNaUY1pkpteFE5DssJFmepTu6X6sd1sZf0
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36
+  sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"
+  Content-Type: application/json
+  sec-ch-ua-mobile: ?0
+  Accept: */*
+  Sec-GPC: 1
+  Accept-Language: es-419,es;q=0.7
+  Origin: http://localhost
+  Sec-Fetch-Site: same-origin
+  Sec-Fetch-Mode: cors
+  Sec-Fetch-Dest: empty
+  Referer: http://localhost/admin/dashboard/
+  Accept-Encoding: gzip, deflate, br, zstd
+  Cookie: PHPSESSID=8po8fckvr8nm3c8liqs0q46ei4
+Raw Input: {"admin_password":"admin123"}
+Decoded: {"admin_password":"admin123"}
+JSON Error: No error
+
+=== 2025-09-30 14:03:24 ===
+Method: DELETE
+URL: /test_delete.php
+Headers:
+  Host: localhost
+  Connection: keep-alive
+  Content-Length: 29
+  Pragma: no-cache
+  Cache-Control: no-cache
+  X-Access-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzIwMTk0fQ.pQ1Czz17URsfAXnRtkl5UFzqj4XbB4jbXkLRwDr1WiA
+  sec-ch-ua-platform: "Windows"
+  Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzIwMTk0fQ.pQ1Czz17URsfAXnRtkl5UFzqj4XbB4jbXkLRwDr1WiA
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36
+  sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"
+  Content-Type: application/json
+  sec-ch-ua-mobile: ?0
+  Accept: */*
+  Sec-GPC: 1
+  Accept-Language: es-419,es;q=0.7
+  Origin: http://localhost
+  Sec-Fetch-Site: same-origin
+  Sec-Fetch-Mode: cors
+  Sec-Fetch-Dest: empty
+  Referer: http://localhost/admin/dashboard/
+  Accept-Encoding: gzip, deflate, br, zstd
+  Cookie: PHPSESSID=8po8fckvr8nm3c8liqs0q46ei4
+Raw Input: {"admin_password":"admin123"}
+Decoded: {"admin_password":"admin123"}
+JSON Error: No error
+
+=== 2025-09-30 16:45:01 ===
+Method: DELETE
+URL: /test_delete.php
+Headers:
+  Host: localhost
+  Connection: keep-alive
+  Content-Length: 29
+  X-Access-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzI5ODM2fQ.eymy-6dgCAY0OCPuBQJUeHc4P4Tr6dQMhGDBF5MlJGc
+  sec-ch-ua-platform: "Windows"
+  Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiY2xpZW50ZV9pZCI6bnVsbCwiZXhwIjoxNzU5MzI5ODM2fQ.eymy-6dgCAY0OCPuBQJUeHc4P4Tr6dQMhGDBF5MlJGc
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36
+  sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"
+  Content-Type: application/json
+  sec-ch-ua-mobile: ?0
+  Accept: */*
+  Sec-GPC: 1
+  Accept-Language: es-419,es;q=0.7
+  Origin: http://localhost
+  Sec-Fetch-Site: same-origin
+  Sec-Fetch-Mode: cors
+  Sec-Fetch-Dest: empty
+  Referer: http://localhost/admin/dashboard/
+  Accept-Encoding: gzip, deflate, br, zstd
+  Cookie: PHPSESSID=90mislo5fuc8j2pa3rln5ske6m
+Raw Input: {"admin_password":"admin123"}
+Decoded: {"admin_password":"admin123"}
+JSON Error: No error
+

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub CID - Centro de Innovación y Desarrollo | KPMG Chile</title>
+    
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- PapaParse -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <style>
+        :root {
+            --kpmg-primary: #00338D;
+            --kpmg-secondary: #005EB8;
+            --kpmg-accent: #0091DA;
+            --kmpg-light: #E3F2FD;
+            --kpmg-dark: #1A1A1A;
+            --kpmg-gray: #666;
+            --kpmg-light-gray: #F5F7FA;
+            --shadow-sm: 0 2px 8px rgba(0,51,141,0.1);
+            --shadow-md: 0 4px 16px rgba(0,51,141,0.15);
+            --shadow-lg: 0 8px 32px rgba(0,51,141,0.2);
+            --shadow-xl: 0 16px 48px rgba(0,51,141,0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--kpmg-light-gray) 0%, #fff 100%);
+            color: var(--kpmg-dark);
+            overflow-x: hidden;
+        }
+
+        /* Header con animaciones */
+        .main-header {
+            background: linear-gradient(135deg, var(--kpmg-primary) 0%, var(--kpmg-secondary) 50%, var(--kpmg-accent) 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: headerPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes headerPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-section img {
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+
+        .brand-info h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin: 0;
+        }
+
+        .brand-info .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: block;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Container principal */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Navigation pills con animaciones */
+        .nav-pills {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-pill {
+            background: white;
+            border: 2px solid var(--kmpg-light);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            color: var(--kpmg-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-pill::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .nav-pill span, .nav-pill i {
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .nav-pill:hover::before,
+        .nav-pill.active::before {
+            transform: translateX(0);
+        }
+
+        .nav-pill:hover,
+        .nav-pill.active {
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Grid de automatizaciones */
+        .automations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .automation-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(0,145,218,0.1);
+        }
+
+        .automation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--kpmg-primary), var(--kpmg-accent));
+        }
+
+        .automation-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            transform: translateX(-100%) translateY(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .automation-card:hover::after {
+            transform: translateX(0) translateY(0);
+        }
+
+        .automation-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-icon i {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--kpmg-dark);
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-description {
+            color: var(--kpmg-gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-stat {
+            text-align: center;
+        }
+
+        .card-stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--kpmg-primary);
+            display: block;
+        }
+
+        .card-stat-label {
+            font-size: 0.75rem;
+            color: var(--kpmg-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-action {
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Contenido principal */
+        .main-content {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            padding: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .content-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        /* Formulario PT mejorado */
+        .pt-form-section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 20px;
+            border-left: 4px solid var(--kpmg-primary);
+            position: relative;
+        }
+
+        .section-title {
+            color: var(--kpmg-primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-field {
+            position: relative;
+        }
+
+        .form-field label {
+            display: block;
+            font-weight: 500;
+            color: var(--kpmg-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Custom selects y inputs */
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            appearance: none;
+            position: relative;
+        }
+
+        .form-field select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 3rem;
+        }
+
+        .form-field input:focus,
+        .form-field select:focus {
+            outline: none;
+            border-color: var(--kpmg-accent);
+            box-shadow: 0 0 0 4px rgba(0,145,218,0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-field input:disabled,
+        .form-field select:disabled {
+            background: #f8fafc;
+            color: #64748b;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            font-size: 1rem;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Tabla de documentos */
+        .documents-table {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--kpmg-primary), var(--kpmg-accent));
+            padding: 1.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .table-headers {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            font-weight: 600;
+            color: var(--kpmg-dark);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .document-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
+        .document-row:hover {
+            background: rgba(0,145,218,0.05);
+            transform: scale(1.01);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--kpmg-accent), var(--kpmg-secondary));
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Animaciones de transición */
+        .fade-enter-active, .fade-leave-active {
+            transition: all 0.5s ease;
+        }
+
+        .fade-enter-from, .fade-leave-to {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .slide-up-enter-active, .slide-up-leave-active {
+            transition: all 0.4s ease;
+        }
+
+        .slide-up-enter-from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .slide-up-leave-to {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--kpmg-gray);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--kmpg-light);
+            border-top: 3px solid var(--kpmg-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem; }
+            .header-content { flex-direction: column; gap: 1rem; }
+            .header-stats { gap: 1rem; }
+            .automations-grid { grid-template-columns: 1fr; }
+            .nav-pills { justify-content: flex-start; overflow-x: auto; }
+            .document-row, .table-headers { grid-template-columns: 1fr; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/KPMG_logo.svg/2560px-KPMG_logo.svg.png" alt="KPMG">
+                    <div class="brand-info">
+                        <h1>CID Hub</h1>
+                        <div class="subtitle">Centro de Innovación y Desarrollo</div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.totalAutomations }}</span>
+                        <span class="stat-label">Automatizaciones</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.activeUsers }}</span>
+                        <span class="stat-label">Usuarios Activos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.totalDocuments }}</span>
+                        <span class="stat-label">Documentos</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Container Principal -->
+        <div class="main-container">
+            <!-- Navigation Pills -->
+            <transition name="fade">
+                <div v-if="currentView === 'grid'" class="nav-pills">
+                    <div 
+                        v-for="category in categories" 
+                        :key="category.id"
+                        class="nav-pill"
+                        :class="{ active: activeCategory === category.id }"
+                        @click="setActiveCategory(category.id)"
+                    >
+                        <i :class="category.icon"></i>
+                        <span>{{ category.name }}</span>
+                    </div>
+                </div>
+            </transition>
+
+            <!-- Grid de Automatizaciones -->
+            <transition name="slide-up">
+                <div v-if="currentView === 'grid'" class="automations-grid">
+                    <div 
+                        v-for="automation in filteredAutomations" 
+                        :key="automation.id"
+                        class="automation-card"
+                        @click="openAutomation(automation.id)"
+                    >
+                        <div class="card-icon">
+                            <i :class="automation.icon"></i>
+                        </div>
+                        <h3 class="card-title">{{ automation.title }}</h3>
+                        <p class="card-description">{{ automation.description }}</p>
+                        <div class="card-stats">
+                            <div class="card-stat">
+                                <span class="card-stat-number">{{ automation.stats.users }}</span>
+                                <span class="card-stat-label">Usuarios</span>
+                            </div>
+                            <div class="card-stat">
+                                <span class="card-stat-number">{{ automation.stats.documents }}</span>
+                                <span class="card-stat-label">Docs</span>
+                            </div>
+                            <div class="card-stat">
+                                <span class="card-stat-number">{{ automation.stats.usage }}</span>
+                                <span class="card-stat-label">Uso</span>
+                            </div>
+                        </div>
+                        <button class="card-action">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Abrir Automatización</span>
+                        </button>
+                    </div>
+                </div>
+            </transition>
+
+            <!-- Contenido Principal -->
+            <transition name="fade">
+                <div v-if="currentView === 'automation'" class="main-content">
+                    <div class="content-header">
+                        <button class="back-button" @click="showGrid">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h2>{{ currentAutomation?.title }}</h2>
+                        <p>{{ currentAutomation?.description }}</p>
+                    </div>
+                    <div class="content-body">
+                        <component :is="currentAutomationComponent" v-if="currentAutomationComponent"></component>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue;
+
+        // Componente del Repositorio PT
+        const RepositorioPT = {
+            template: `
+                <div>
+                    <div class="pt-form-section">
+                        <div class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Información General</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Nombre del Cliente</label>
+                                <input v-model="form.clientName" type="text" placeholder="Ingrese el nombre del cliente">
+                            </div>
+                            <div class="form-field">
+                                <label>Fecha</label>
+                                <input v-model="form.date" type="date">
+                            </div>
+                            <div class="form-field">
+                                <label>Grupo</label>
+                                <select v-model="form.grupo" @change="updatePersonas">
+                                    <option value="">Seleccione un grupo</option>
+                                    <option value="auditoria">Auditoría</option>
+                                    <option value="consultoria">Consultoría</option>
+                                    <option value="impuestos">Impuestos</option>
+                                    <option value="advisory">Advisory</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Preparado por</label>
+                                <select v-model="form.preparadoPor" :disabled="!form.grupo">
+                                    <option value="">{{ form.grupo ? 'Seleccione una persona' : 'Primero seleccione un grupo' }}</option>
+                                    <option v-for="persona in preparadoOptions" :key="persona.value" :value="persona.value">
+                                        {{ persona.text }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Revisado por</label>
+                                <select v-model="form.revisadoPor" :disabled="!form.grupo">
+                                    <option value="">{{ form.grupo ? 'Seleccione una persona' : 'Primero seleccione un grupo' }}</option>
+                                    <option v-for="persona in revisadoOptions" :key="persona.value" :value="persona.value">
+                                        {{ persona.text }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Rubro</label>
+                                <select v-model="form.rubro" @change="loadDocuments">
+                                    <option value="">Seleccione un rubro</option>
+                                    <option value="financiero">Estados Financieros</option>
+                                    <option value="fiscal">Documentos Fiscales</option>
+                                    <option value="legal">Documentos Legales</option>
+                                    <option value="rrhh">Recursos Humanos</option>
+                                    <option value="operativo">Documentos Operativos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="primary-button" @click="searchDocuments">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar Documentos</span>
+                        </button>
+                    </div>
+
+                    <transition name="fade">
+                        <div v-if="showDocuments" class="documents-table">
+                            <div class="table-header">
+                                <i class="fas fa-files"></i> Documentos Disponibles - {{ rubroNames[form.rubro] }}
+                            </div>
+                            <div class="table-headers">
+                                <div>Documento</div>
+                                <div>Descripción</div>
+                                <div>Fecha</div>
+                                <div>Tamaño</div>
+                                <div>Acción</div>
+                            </div>
+                            <div class="document-row" v-for="doc in currentDocuments" :key="doc.archivo">
+                                <div><strong>{{ doc.nombre }}</strong></div>
+                                <div>{{ doc.descripcion }}</div>
+                                <div>{{ doc.fecha }}</div>
+                                <div>{{ doc.tamano }}</div>
+                                <div>
+                                    <button class="download-btn" @click="downloadDocument(doc)">
+                                        <i class="fas fa-download"></i>
+                                        Descargar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            `,
+            setup() {
+                const form = ref({
+                    clientName: '',
+                    date: new Date().toISOString().split('T')[0],
+                    grupo: '',
+                    preparadoPor: '',
+                    revisadoPor: '',
+                    rubro: ''
+                });
+
+                const showDocuments = ref(false);
+                const currentDocuments = ref([]);
+
+                const grupoPersonas = {
+                    auditoria: {
+                        preparado: [
+                            { value: 'juan.perez', text: 'Juan Pérez' },
+                            { value: 'maria.rodriguez', text: 'María Rodríguez' },
+                            { value: 'carlos.martinez', text: 'Carlos Martínez' }
+                        ],
+                        revisado: [
+                            { value: 'ana.garcia', text: 'Ana García (Senior)' },
+                            { value: 'luis.hernandez', text: 'Luis Hernández (Manager)' }
+                        ]
+                    },
+                    consultoria: {
+                        preparado: [
+                            { value: 'sofia.lopez', text: 'Sofía López' },
+                            { value: 'diego.sanchez', text: 'Diego Sánchez' }
+                        ],
+                        revisado: [
+                            { value: 'roberto.diaz', text: 'Roberto Díaz (Senior)' }
+                        ]
+                    },
+                    impuestos: {
+                        preparado: [
+                            { value: 'miguel.castro', text: 'Miguel Castro' },
+                            { value: 'elena.vargas', text: 'Elena Vargas' }
+                        ],
+                        revisado: [
+                            { value: 'claudia.morales', text: 'Claudia Morales (Senior)' }
+                        ]
+                    },
+                    advisory: {
+                        preparado: [
+                            { value: 'natalia.romero', text: 'Natalia Romero' },
+                            { value: 'alejandro.gutierrez', text: 'Alejandro Gutiérrez' }
+                        ],
+                        revisado: [
+                            { value: 'ricardo.silva', text: 'Ricardo Silva (Senior)' }
+                        ]
+                    }
+                };
+
+                const documentosPorRubro = {
+                    financiero: [
+                        { nombre: 'Balance General 2024', descripcion: 'Estados de situación financiera', fecha: '2024-01-15', tamano: '2.5 MB', archivo: 'balance_2024.pdf' },
+                        { nombre: 'Estado de Resultados Q4', descripcion: 'Resultados del cuarto trimestre', fecha: '2024-01-10', tamano: '1.8 MB', archivo: 'resultados_q4.pdf' },
+                        { nombre: 'Flujo de Efectivo', descripcion: 'Estados de flujo de efectivo anual', fecha: '2024-01-12', tamano: '1.2 MB', archivo: 'flujo_efectivo.pdf' }
+                    ],
+                    fiscal: [
+                        { nombre: 'Declaración Anual 2023', descripcion: 'Declaración de impuestos anual', fecha: '2024-04-30', tamano: '950 KB', archivo: 'declaracion_anual.pdf' },
+                        { nombre: 'CFDI Emitidos Q1', descripcion: 'Comprobantes fiscales del primer trimestre', fecha: '2024-04-01', tamano: '15.2 MB', archivo: 'cfdi_q1.zip' }
+                    ],
+                    legal: [
+                        { nombre: 'Acta Constitutiva', descripcion: 'Documento de constitución de la empresa', fecha: '2023-01-20', tamano: '4.5 MB', archivo: 'acta_constitutiva.pdf' },
+                        { nombre: 'Poderes Legales', descripcion: 'Documentos de representación legal', fecha: '2023-06-15', tamano: '2.1 MB', archivo: 'poderes_legales.pdf' }
+                    ],
+                    rrhh: [
+                        { nombre: 'Nómina Diciembre 2023', descripcion: 'Registro de nómina del último mes', fecha: '2023-12-31', tamano: '3.2 MB', archivo: 'nomina_dic2023.pdf' }
+                    ],
+                    operativo: [
+                        { nombre: 'Manual de Procesos', descripcion: 'Documentación de procesos operativos', fecha: '2023-08-20', tamano: '7.3 MB', archivo: 'manual_procesos.pdf' }
+                    ]
+                };
+
+                const rubroNames = {
+                    'financiero': 'Estados Financieros',
+                    'fiscal': 'Documentos Fiscales',
+                    'legal': 'Documentos Legales',
+                    'rrhh': 'Recursos Humanos',
+                    'operativo': 'Documentos Operativos'
+                };
+
+                const preparadoOptions = computed(() => {
+                    return form.value.grupo ? grupoPersonas[form.value.grupo]?.preparado || [] : [];
+                });
+
+                const revisadoOptions = computed(() => {
+                    return form.value.grupo ? grupoPersonas[form.value.grupo]?.revisado || [] : [];
+                });
+
+                const updatePersonas = () => {
+                    form.value.preparadoPor = '';
+                    form.value.revisadoPor = '';
+                };
+
+                const loadDocuments = () => {
+                    if (form.value.rubro) {
+                        currentDocuments.value = documentosPorRubro[form.value.rubro] || [];
+                        showDocuments.value = true;
+                    }
+                };
+
+                const searchDocuments = () => {
+                    if (!form.value.clientName || !form.value.rubro) {
+                        alert('Por favor complete los campos requeridos');
+                        return;
+                    }
+                    loadDocuments();
+                };
+
+                const downloadDocument = (doc) => {
+                    alert(`Descargando: ${doc.nombre}\nArchivo: ${doc.archivo}`);
+                    console.log(`Simulando descarga de: ${doc.archivo}`);
+                };
+
+                return {
+                    form,
+                    showDocuments,
+                    currentDocuments,
+                    preparadoOptions,
+                    revisadoOptions,
+                    rubroNames,
+                    updatePersonas,
+                    loadDocuments,
+                    searchDocuments,
+                    downloadDocument
+                };
+            }
+        };
+
+        // Componente placeholder para otras automatizaciones
+        const PlaceholderAutomation = {
+            template: `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Esta automatización estará disponible próximamente...</p>
+                </div>
+            `
+        };
+
+        // App principal
+        createApp({
+            components: {
+                RepositorioPT,
+                PlaceholderAutomation
+            },
+            setup() {
+                const currentView = ref('grid');
+                const activeCategory = ref('all');
+                const currentAutomation = ref(null);
+                const currentAutomationComponent = ref(null);
+
+                const stats = ref({
+                    totalAutomations: 8,
+                    activeUsers: 142,
+                    totalDocuments: '1,250'
+                });
+
+                const categories = [
+                    { id: 'all', name: 'Todas', icon: 'fas fa-th' },
+                    { id: 'documents', name: 'Documentos', icon: 'fas fa-file-alt' },
+                    { id: 'reports', name: 'Reportes', icon: 'fas fa-chart-line' },
+                    { id: 'process', name: 'Procesos', icon: 'fas fa-cogs' },
+                    { id: 'ai', name: 'IA & ML', icon: 'fas fa-robot' }
+                ];
+
+                const automations = [
+                    {
+                        id: 'repositorio-pt',
+                        title: 'Repositorio de PT',
+                        description: 'Acceso centralizado a papers de trabajo y documentación técnica con filtros avanzados por grupo y rubro.',
+                        icon: 'fas fa-folder',
+                        category: 'documents',
+                        stats: { users: 89, documents: 450, usage: '95%' }
+                    },
+                    {
+                        id: 'generador-reportes',
+                        title: 'Generador de Reportes',
+                        description: 'Creación automática de reportes financieros y de auditoría con plantillas personalizables.',
+                        icon: 'fas fa-chart-bar',
+                        category: 'reports',
+                        stats: { users: 45, documents: 230, usage: '87%' }
+                    },
+                    {
+                        id: 'validador-cfdi',
+                        title: 'Validador CFDI',
+                        description: 'Validación automática de comprobantes fiscales digitales con verificación SAT en tiempo real.',
+                        icon: 'fas fa-shield-alt',
+                        category: 'process',
+                        stats: { users: 67, documents: 1200, usage: '92%' }
+                    },
+                    {
+                        id: 'dashboard-kpis',
+                        title: 'Dashboard KPIs',
+                        description: 'Visualización en tiempo real de indicadores clave de rendimiento para diferentes áreas de negocio.',
+                        icon: 'fas fa-tachometer-alt',
+                        category: 'reports',
+                        stats: { users: 123, documents: 45, usage: '98%' }
+                    },
+                    {
+                        id: 'chatbot-consultas',
+                        title: 'ChatBot Consultas',
+                        description: 'Asistente virtual con IA para resolver consultas frecuentes sobre normativas y procesos.',
+                        icon: 'fas fa-comments',
+                        category: 'ai',
+                        stats: { users: 89, documents: 0, usage: '89%' }
+                    },
+                    {
+                        id: 'clasificador-docs',
+                        title: 'Clasificador de Documentos',
+                        description: 'Clasificación automática de documentos usando machine learning y procesamiento de texto.',
+                        icon: 'fas fa-copy',
+                        category: 'ai',
+                        stats: { users: 34, documents: 890, usage: '76%' }
+                    },
+                    {
+                        id: 'workflow-aprobaciones',
+                        title: 'Workflow de Aprobaciones',
+                        description: 'Sistema automatizado de flujos de aprobación para documentos y procesos internos.',
+                        icon: 'fas fa-project-diagram',
+                        category: 'process',
+                        stats: { users: 78, documents: 567, usage: '91%' }
+                    },
+                    {
+                        id: 'monitor-compliance',
+                        title: 'Monitor de Compliance',
+                        description: 'Monitoreo continuo del cumplimiento normativo con alertas automáticas y reportes de riesgo.',
+                        icon: 'fas fa-exclamation-triangle',
+                        category: 'process',
+                        stats: { users: 56, documents: 123, usage: '94%' }
+                    }
+                ];
+
+                const filteredAutomations = computed(() => {
+                    return activeCategory.value === 'all' 
+                        ? automations 
+                        : automations.filter(auto => auto.category === activeCategory.value);
+                });
+
+                const setActiveCategory = (categoryId) => {
+                    activeCategory.value = categoryId;
+                };
+
+                const openAutomation = (automationId) => {
+                    const automation = automations.find(a => a.id === automationId);
+                    if (!automation) return;
+
+                    currentAutomation.value = automation;
+                    currentView.value = 'automation';
+
+                    // Cargar componente específico
+                    switch(automationId) {
+                        case 'repositorio-pt':
+                            currentAutomationComponent.value = 'RepositorioPT';
+                            break;
+                        default:
+                            currentAutomationComponent.value = 'PlaceholderAutomation';
+                    }
+                };
+
+                const showGrid = () => {
+                    currentView.value = 'grid';
+                    currentAutomation.value = null;
+                    currentAutomationComponent.value = null;
+                };
+
+                onMounted(() => {
+                    console.log('CID Hub cargado correctamente');
+                    // Aquí cargarías datos CSV si fuera necesario
+                    // loadCSVData();
+                });
+
+                return {
+                    currentView,
+                    activeCategory,
+                    currentAutomation,
+                    currentAutomationComponent,
+                    stats,
+                    categories,
+                    automations,
+                    filteredAutomations,
+                    setActiveCategory,
+                    openAutomation,
+                    showGrid
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
